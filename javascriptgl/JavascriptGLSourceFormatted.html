@@ -1,0 +1,778 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="1138.47">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 11.0px Menlo; color: #797979; background-color: #393939}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 11.0px Menlo; color: #ebe7e2; background-color: #393939; min-height: 13.0px}
+    p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 11.0px Menlo; color: #797979; background-color: #393939; min-height: 13.0px}
+    p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 11.0px Menlo; color: #ebe7e2; background-color: #393939}
+    p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 11.0px Menlo; color: #b4708b; background-color: #393939}
+    p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 11.0px Menlo; color: #d88400; background-color: #393939}
+    span.s1 {text-decoration: underline ; color: #6a828a}
+    span.s2 {color: #d88400}
+    span.s3 {color: #c2c100}
+    span.s4 {color: #e24f00}
+    span.s5 {color: #7dabcd}
+    span.s6 {color: #b4708b}
+    span.s7 {color: #b1cf65}
+    span.s8 {color: #797979}
+    span.s9 {color: #ebe7e2}
+    span.Apple-tab-span {white-space:pre}
+  </style>
+</head>
+<body>
+<p class="p1"><i>/*</i></p>
+<p class="p1"><i><span class="Apple-converted-space"> </span>* Implementation of a OpenGL subset in Javascript using HTML5's canvas</i></p>
+<p class="p1"><i><span class="Apple-converted-space"> </span>* Assignment for Computational Graphics graduate course</i></p>
+<p class="p1"><i><span class="Apple-converted-space"> </span>* ICMC - Universidade de São Paulo</i></p>
+<p class="p1"><i><span class="Apple-converted-space"> </span>* Created by Filipi Nacimento Silva</i></p>
+<p class="p1"><i><span class="Apple-converted-space"> </span>*</i></p>
+<p class="p1"><i>*/</i></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p1"><i>/* LICENSED Under the terms of NEW BSD LICENSE:</i></p>
+<p class="p3"><i></i><br></p>
+<p class="p1"><i>Copyright (c) 2012, Filipi Nascimento Silva</i></p>
+<p class="p1"><i>All rights reserved.</i></p>
+<p class="p3"><i></i><br></p>
+<p class="p1"><i>Redistribution and use in source and binary forms, with or without</i></p>
+<p class="p1"><i>modification, are permitted provided that the following conditions are met:</i></p>
+<p class="p1"><i><span class="Apple-converted-space">    </span>* Redistributions of source code must retain the above copyright</i></p>
+<p class="p1"><i><span class="Apple-converted-space">      </span>notice, this list of conditions and the following disclaimer.</i></p>
+<p class="p1"><i><span class="Apple-converted-space">    </span>* Redistributions in binary form must reproduce the above copyright</i></p>
+<p class="p1"><i><span class="Apple-converted-space">      </span>notice, this list of conditions and the following disclaimer in the</i></p>
+<p class="p1"><i><span class="Apple-converted-space">      </span>documentation and/or other materials provided with the distribution.</i></p>
+<p class="p1"><i><span class="Apple-converted-space">    </span>* Neither the name of the &lt;organization&gt; nor the</i></p>
+<p class="p1"><i><span class="Apple-converted-space">      </span>names of its contributors may be used to endorse or promote products</i></p>
+<p class="p1"><i><span class="Apple-converted-space">      </span>derived from this software without specific prior written permission.</i></p>
+<p class="p3"><i></i><br></p>
+<p class="p1"><i>THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND</i></p>
+<p class="p1"><i>ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED</i></p>
+<p class="p1"><i>WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE</i></p>
+<p class="p1"><i>DISCLAIMED. IN NO EVENT SHALL &lt;COPYRIGHT HOLDER&gt; BE LIABLE FOR ANY</i></p>
+<p class="p1"><i>DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES</i></p>
+<p class="p1"><i>(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;</i></p>
+<p class="p1"><i>LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND</i></p>
+<p class="p1"><i>ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT</i></p>
+<p class="p1"><i>(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS</i></p>
+<p class="p1"><i>SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</i></p>
+<p class="p1"><i>*/</i></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p1"><i>/* Portins of code marked as provided by glMatrix JS (</i><a href="https://github.com/toji/gl-matrix/"><span class="s1">https://github.com/toji/gl-matrix/</span></a><i>)</i></p>
+<p class="p1"><i><span class="Apple-converted-space"> </span>* are under the following license:</i></p>
+<p class="p1"><i><span class="Apple-converted-space"> </span>*</i></p>
+<p class="p1"><i><span class="Apple-converted-space"> </span>* Copyright (c) 2012 Brandon Jones, Colin MacKenzie IV</i></p>
+<p class="p1"><i><span class="Apple-converted-space"> </span>*</i></p>
+<p class="p1"><i><span class="Apple-converted-space"> </span>* This software is provided 'as-is', without any express or implied</i></p>
+<p class="p1"><i><span class="Apple-converted-space"> </span>* warranty. In no event will the authors be held liable for any damages</i></p>
+<p class="p1"><i><span class="Apple-converted-space"> </span>* arising from the use of this software.</i></p>
+<p class="p1"><i><span class="Apple-converted-space"> </span>*</i></p>
+<p class="p1"><i><span class="Apple-converted-space"> </span>* Permission is granted to anyone to use this software for any purpose,</i></p>
+<p class="p1"><i><span class="Apple-converted-space"> </span>* including commercial applications, and to alter it and redistribute it</i></p>
+<p class="p1"><i><span class="Apple-converted-space"> </span>* freely, subject to the following restrictions:</i></p>
+<p class="p1"><i><span class="Apple-converted-space"> </span>*</i></p>
+<p class="p1"><i><span class="Apple-converted-space"> </span>*<span class="Apple-converted-space">    </span>1. The origin of this software must not be misrepresented; you must not</i></p>
+<p class="p1"><i><span class="Apple-converted-space"> </span>*<span class="Apple-converted-space">    </span>claim that you wrote the original software. If you use this software</i></p>
+<p class="p1"><i><span class="Apple-converted-space"> </span>*<span class="Apple-converted-space">    </span>in a product, an acknowledgment in the product documentation would be</i></p>
+<p class="p1"><i><span class="Apple-converted-space"> </span>*<span class="Apple-converted-space">    </span>appreciated but is not required.</i></p>
+<p class="p1"><i><span class="Apple-converted-space"> </span>*</i></p>
+<p class="p1"><i><span class="Apple-converted-space"> </span>*<span class="Apple-converted-space">    </span>2. Altered source versions must be plainly marked as such, and must not</i></p>
+<p class="p1"><i><span class="Apple-converted-space"> </span>*<span class="Apple-converted-space">    </span>be misrepresented as being the original software.</i></p>
+<p class="p1"><i><span class="Apple-converted-space"> </span>*</i></p>
+<p class="p1"><i><span class="Apple-converted-space"> </span>*<span class="Apple-converted-space">    </span>3. This notice may not be removed or altered from any source</i></p>
+<p class="p1"><i><span class="Apple-converted-space"> </span>*<span class="Apple-converted-space">    </span>distribution.</i></p>
+<p class="p1"><i><span class="Apple-converted-space"> </span>*/</i></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p1"><i>// Proper definition of last method to use Arrays as Stacks.<span class="Apple-converted-space"> </span></i></p>
+<p class="p4"><span class="s2">if</span>(<span class="s3">!</span><span class="s4">Array</span>.prototype.last) {</p>
+<p class="p4"><span class="Apple-converted-space">    </span><span class="s4">Array</span>.prototype.last <span class="s3">=</span> <span class="s2">function</span>() {</p>
+<p class="p4"><span class="Apple-converted-space">        </span><span class="s2">return</span> <span class="s2">this</span>[<span class="s2">this</span>.length <span class="s3">-</span> <span class="s5">1</span>];</p>
+<p class="p4"><span class="Apple-converted-space">    </span>}</p>
+<p class="p4">}</p>
+<p class="p2"><br></p>
+<p class="p1"><i>// Suitable RGB to HTML string converter.</i></p>
+<p class="p4"><span class="s2">function</span> <span class="s6">rgb</span>(red, green, blue){</p>
+<p class="p4"><span class="Apple-converted-space">    </span><span class="s2">return</span> <span class="s7">"rgb("</span><span class="s3">+</span>red<span class="s3">+</span><span class="s7">", "</span><span class="s3">+</span>green<span class="s3">+</span><span class="s7">", "</span><span class="s3">+</span>blue<span class="s3">+</span><span class="s7">")"</span>;</p>
+<p class="p4">}</p>
+<p class="p2"><br></p>
+<p class="p1"><i>//</i></p>
+<p class="p1"><i>//Matrix and Vector operations - Only 4x4 matrices and 3 component vectors are implemented</i></p>
+<p class="p1"><i>//</i></p>
+<p class="p2"><br></p>
+<p class="p1"><i>//Creates a new Null Matrix</i></p>
+<p class="p4">VECNewMatrix <span class="s3">=</span> <span class="s2">function</span>(copyM){</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s2">var</span> m <span class="s3">=</span> <span class="s4">Array</span>();</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s2">if</span>(copyM){</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>m[<span class="s5">0</span>]<span class="s3">=</span> copyM[<span class="s5">0</span>];</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>m[<span class="s5">1</span>]<span class="s3">=</span> copyM[<span class="s5">1</span>];</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>m[<span class="s5">2</span>]<span class="s3">=</span> copyM[<span class="s5">2</span>];</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>m[<span class="s5">3</span>]<span class="s3">=</span> copyM[<span class="s5">3</span>];</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>m[<span class="s5">4</span>]<span class="s3">=</span> copyM[<span class="s5">4</span>];</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>m[<span class="s5">5</span>]<span class="s3">=</span> copyM[<span class="s5">5</span>];</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>m[<span class="s5">6</span>]<span class="s3">=</span> copyM[<span class="s5">6</span>];</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>m[<span class="s5">7</span>]<span class="s3">=</span> copyM[<span class="s5">7</span>];</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>m[<span class="s5">8</span>]<span class="s3">=</span> copyM[<span class="s5">8</span>];</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>m[<span class="s5">9</span>]<span class="s3">=</span> copyM[<span class="s5">9</span>];</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>m[<span class="s5">10</span>]<span class="s3">=</span> copyM[<span class="s5">10</span>];</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>m[<span class="s5">11</span>]<span class="s3">=</span> copyM[<span class="s5">11</span>];</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>m[<span class="s5">12</span>]<span class="s3">=</span> copyM[<span class="s5">12</span>];</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>m[<span class="s5">13</span>]<span class="s3">=</span> copyM[<span class="s5">13</span>];</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>m[<span class="s5">14</span>]<span class="s3">=</span> copyM[<span class="s5">14</span>];</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>m[<span class="s5">15</span>]<span class="s3">=</span> copyM[<span class="s5">15</span>];</p>
+<p class="p4"><span class="Apple-tab-span">	</span>}</p>
+<p class="p4"><span class="Apple-tab-span">	</span>m[<span class="s5">0</span>]<span class="s3">=</span> <span class="s5">0</span>;</p>
+<p class="p4"><span class="Apple-tab-span">	</span>m[<span class="s5">1</span>]<span class="s3">=</span> <span class="s5">0</span>;</p>
+<p class="p4"><span class="Apple-tab-span">	</span>m[<span class="s5">2</span>]<span class="s3">=</span> <span class="s5">0</span>;</p>
+<p class="p4"><span class="Apple-tab-span">	</span>m[<span class="s5">3</span>]<span class="s3">=</span> <span class="s5">0</span>;</p>
+<p class="p4"><span class="Apple-tab-span">	</span>m[<span class="s5">4</span>]<span class="s3">=</span> <span class="s5">0</span>;</p>
+<p class="p4"><span class="Apple-tab-span">	</span>m[<span class="s5">5</span>]<span class="s3">=</span> <span class="s5">0</span>;</p>
+<p class="p4"><span class="Apple-tab-span">	</span>m[<span class="s5">6</span>]<span class="s3">=</span> <span class="s5">0</span>;</p>
+<p class="p4"><span class="Apple-tab-span">	</span>m[<span class="s5">7</span>]<span class="s3">=</span> <span class="s5">0</span>;</p>
+<p class="p4"><span class="Apple-tab-span">	</span>m[<span class="s5">8</span>]<span class="s3">=</span> <span class="s5">0</span>;</p>
+<p class="p4"><span class="Apple-tab-span">	</span>m[<span class="s5">9</span>]<span class="s3">=</span> <span class="s5">0</span>;</p>
+<p class="p4"><span class="Apple-tab-span">	</span>m[<span class="s5">10</span>]<span class="s3">=</span> <span class="s5">0</span>;</p>
+<p class="p4"><span class="Apple-tab-span">	</span>m[<span class="s5">11</span>]<span class="s3">=</span> <span class="s5">0</span>;</p>
+<p class="p4"><span class="Apple-tab-span">	</span>m[<span class="s5">12</span>]<span class="s3">=</span> <span class="s5">0</span>;</p>
+<p class="p4"><span class="Apple-tab-span">	</span>m[<span class="s5">13</span>]<span class="s3">=</span> <span class="s5">0</span>;</p>
+<p class="p4"><span class="Apple-tab-span">	</span>m[<span class="s5">14</span>]<span class="s3">=</span> <span class="s5">0</span>;</p>
+<p class="p4"><span class="Apple-tab-span">	</span>m[<span class="s5">15</span>]<span class="s3">=</span> <span class="s5">0</span>;</p>
+<p class="p4">}</p>
+<p class="p2"><br></p>
+<p class="p1"><i>//Copy the contents of copyM to destination matrix.</i></p>
+<p class="p4">VECCopyMatrix <span class="s3">=</span> <span class="s2">function</span>(copyM,destination){</p>
+<p class="p4"><span class="Apple-converted-space">    </span><span class="s2">if</span>(<span class="s3">!</span>destination) {</p>
+<p class="p4"><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span></span>destination <span class="s3">=</span> <span class="s4">Array</span>();</p>
+<p class="p4"><span class="Apple-converted-space">    </span>}</p>
+<p class="p4"><span class="Apple-tab-span">	</span>destination[<span class="s5">0</span>] <span class="s3">=</span> copyM[<span class="s5">0</span>];</p>
+<p class="p4"><span class="Apple-tab-span">	</span>destination[<span class="s5">1</span>] <span class="s3">=</span> copyM[<span class="s5">1</span>];</p>
+<p class="p4"><span class="Apple-tab-span">	</span>destination[<span class="s5">2</span>] <span class="s3">=</span> copyM[<span class="s5">2</span>];</p>
+<p class="p4"><span class="Apple-tab-span">	</span>destination[<span class="s5">3</span>] <span class="s3">=</span> copyM[<span class="s5">3</span>];</p>
+<p class="p4"><span class="Apple-tab-span">	</span>destination[<span class="s5">4</span>] <span class="s3">=</span> copyM[<span class="s5">4</span>];</p>
+<p class="p4"><span class="Apple-tab-span">	</span>destination[<span class="s5">5</span>] <span class="s3">=</span> copyM[<span class="s5">5</span>];</p>
+<p class="p4"><span class="Apple-tab-span">	</span>destination[<span class="s5">6</span>] <span class="s3">=</span> copyM[<span class="s5">6</span>];</p>
+<p class="p4"><span class="Apple-tab-span">	</span>destination[<span class="s5">7</span>] <span class="s3">=</span> copyM[<span class="s5">7</span>];</p>
+<p class="p4"><span class="Apple-tab-span">	</span>destination[<span class="s5">8</span>] <span class="s3">=</span> copyM[<span class="s5">8</span>];</p>
+<p class="p4"><span class="Apple-tab-span">	</span>destination[<span class="s5">9</span>] <span class="s3">=</span> copyM[<span class="s5">9</span>];</p>
+<p class="p4"><span class="Apple-tab-span">	</span>destination[<span class="s5">10</span>]<span class="s3">=</span> copyM[<span class="s5">10</span>];</p>
+<p class="p4"><span class="Apple-tab-span">	</span>destination[<span class="s5">11</span>]<span class="s3">=</span> copyM[<span class="s5">11</span>];</p>
+<p class="p4"><span class="Apple-tab-span">	</span>destination[<span class="s5">12</span>]<span class="s3">=</span> copyM[<span class="s5">12</span>];</p>
+<p class="p4"><span class="Apple-tab-span">	</span>destination[<span class="s5">13</span>]<span class="s3">=</span> copyM[<span class="s5">13</span>];</p>
+<p class="p4"><span class="Apple-tab-span">	</span>destination[<span class="s5">14</span>]<span class="s3">=</span> copyM[<span class="s5">14</span>];</p>
+<p class="p4"><span class="Apple-tab-span">	</span>destination[<span class="s5">15</span>]<span class="s3">=</span> copyM[<span class="s5">15</span>];</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s2">return</span> destination;</p>
+<p class="p4">}</p>
+<p class="p2"><br></p>
+<p class="p1"><i>//Creates a human readable string representation of a matrix (note that the matrices are col oriented)</i></p>
+<p class="p4">VECStringMatrix <span class="s3">=</span> <span class="s2">function</span>(matrix){</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s2">var</span> string <span class="s3">=</span> <span class="s7">""</span>;</p>
+<p class="p4"><span class="Apple-tab-span">	</span>string <span class="s3">+=</span> matrix[<span class="s5">0</span>]<span class="s3">+</span><span class="s7">"<span class="Apple-converted-space">  </span>"</span><span class="s3">+</span>matrix[<span class="s5">4</span>]<span class="s3">+</span><span class="s7">"<span class="Apple-converted-space">  </span>"</span><span class="s3">+</span>matrix[<span class="s5">8</span>]<span class="s3">+</span><span class="s7">"<span class="Apple-converted-space">  </span>"</span><span class="s3">+</span>matrix[<span class="s5">12</span>]<span class="s3">+</span><span class="s7">"\n"</span>;</p>
+<p class="p4"><span class="Apple-tab-span">	</span>string <span class="s3">+=</span> matrix[<span class="s5">1</span>]<span class="s3">+</span><span class="s7">"<span class="Apple-converted-space">  </span>"</span><span class="s3">+</span>matrix[<span class="s5">5</span>]<span class="s3">+</span><span class="s7">"<span class="Apple-converted-space">  </span>"</span><span class="s3">+</span>matrix[<span class="s5">9</span>]<span class="s3">+</span><span class="s7">"<span class="Apple-converted-space">  </span>"</span><span class="s3">+</span>matrix[<span class="s5">13</span>]<span class="s3">+</span><span class="s7">"\n"</span>;</p>
+<p class="p4"><span class="Apple-tab-span">	</span>string <span class="s3">+=</span> matrix[<span class="s5">2</span>]<span class="s3">+</span><span class="s7">"<span class="Apple-converted-space">  </span>"</span><span class="s3">+</span>matrix[<span class="s5">6</span>]<span class="s3">+</span><span class="s7">"<span class="Apple-converted-space">  </span>"</span><span class="s3">+</span>matrix[<span class="s5">10</span>]<span class="s3">+</span><span class="s7">"<span class="Apple-converted-space">  </span>"</span><span class="s3">+</span>matrix[<span class="s5">14</span>]<span class="s3">+</span><span class="s7">"\n"</span>;</p>
+<p class="p4"><span class="Apple-tab-span">	</span>string <span class="s3">+=</span> matrix[<span class="s5">3</span>]<span class="s3">+</span><span class="s7">"<span class="Apple-converted-space">  </span>"</span><span class="s3">+</span>matrix[<span class="s5">7</span>]<span class="s3">+</span><span class="s7">"<span class="Apple-converted-space">  </span>"</span><span class="s3">+</span>matrix[<span class="s5">11</span>]<span class="s3">+</span><span class="s7">"<span class="Apple-converted-space">  </span>"</span><span class="s3">+</span>matrix[<span class="s5">15</span>];</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s2">return</span> string;</p>
+<p class="p4">}</p>
+<p class="p2"><br></p>
+<p class="p1"><i>//Creates a identity matrix or turn destionation into a identity matrix</i></p>
+<p class="p4">VECIdentityMatrix <span class="s3">=</span> <span class="s2">function</span>(destination) {</p>
+<p class="p4"><span class="Apple-converted-space">    </span><span class="s2">if</span>(<span class="s3">!</span>destination) {</p>
+<p class="p4"><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span></span>destination <span class="s3">=</span> <span class="s4">Array</span>();</p>
+<p class="p4"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><span class="Apple-converted-space">    </span></p>
+<p class="p4"><span class="Apple-converted-space">    </span>destination[<span class="s5">0</span>] <span class="s3">=</span> <span class="s5">1</span>;<span class="Apple-converted-space">  </span><span class="s8"><i>//11</i></span></p>
+<p class="p4"><span class="Apple-converted-space">    </span>destination[<span class="s5">5</span>] <span class="s3">=</span> <span class="s5">1</span>;<span class="Apple-converted-space">  </span><span class="s8"><i>//22</i></span></p>
+<p class="p4"><span class="Apple-converted-space">    </span>destination[<span class="s5">10</span>] <span class="s3">=</span> <span class="s5">1</span>; <span class="s8"><i>//33</i></span></p>
+<p class="p4"><span class="Apple-converted-space">    </span>destination[<span class="s5">15</span>] <span class="s3">=</span> <span class="s5">1</span>; <span class="s8"><i>//44</i></span></p>
+<p class="p2"><span class="Apple-converted-space">    </span></p>
+<p class="p2"><span class="Apple-converted-space">    </span></p>
+<p class="p4"><span class="Apple-converted-space">    </span><span class="s8"><i>//-</i></span></p>
+<p class="p4"><span class="Apple-converted-space">    </span>destination[<span class="s5">1</span>] <span class="s3">=</span> <span class="s5">0</span>;</p>
+<p class="p4"><span class="Apple-converted-space">    </span>destination[<span class="s5">2</span>] <span class="s3">=</span> <span class="s5">0</span>;</p>
+<p class="p4"><span class="Apple-converted-space">    </span>destination[<span class="s5">3</span>] <span class="s3">=</span> <span class="s5">0</span>;</p>
+<p class="p2"><span class="Apple-converted-space">    </span></p>
+<p class="p2"><span class="Apple-converted-space">    </span></p>
+<p class="p4"><span class="Apple-converted-space">    </span>destination[<span class="s5">4</span>] <span class="s3">=</span> <span class="s5">0</span>;</p>
+<p class="p4"><span class="Apple-converted-space">    </span><span class="s8"><i>//-</i></span></p>
+<p class="p4"><span class="Apple-converted-space">    </span>destination[<span class="s5">6</span>] <span class="s3">=</span> <span class="s5">0</span>;</p>
+<p class="p4"><span class="Apple-converted-space">    </span>destination[<span class="s5">7</span>] <span class="s3">=</span> <span class="s5">0</span>;</p>
+<p class="p2"><span class="Apple-converted-space">    </span></p>
+<p class="p2"><span class="Apple-converted-space">    </span></p>
+<p class="p4"><span class="Apple-converted-space">    </span>destination[<span class="s5">8</span>] <span class="s3">=</span> <span class="s5">0</span>;</p>
+<p class="p4"><span class="Apple-converted-space">    </span><span class="s8"><i>//-</i></span></p>
+<p class="p4"><span class="Apple-converted-space">    </span>destination[<span class="s5">9</span>] <span class="s3">=</span> <span class="s5">0</span>;</p>
+<p class="p4"><span class="Apple-converted-space">    </span>destination[<span class="s5">11</span>] <span class="s3">=</span> <span class="s5">0</span>;</p>
+<p class="p2"><span class="Apple-converted-space">    </span></p>
+<p class="p2"><span class="Apple-converted-space">    </span></p>
+<p class="p4"><span class="Apple-converted-space">    </span>destination[<span class="s5">12</span>] <span class="s3">=</span> <span class="s5">0</span>;</p>
+<p class="p4"><span class="Apple-converted-space">    </span>destination[<span class="s5">13</span>] <span class="s3">=</span> <span class="s5">0</span>;</p>
+<p class="p4"><span class="Apple-converted-space">    </span><span class="s8"><i>//-</i></span></p>
+<p class="p4"><span class="Apple-converted-space">    </span>destination[<span class="s5">14</span>] <span class="s3">=</span> <span class="s5">0</span>;</p>
+<p class="p2"><span class="Apple-converted-space">    </span></p>
+<p class="p4"><span class="Apple-converted-space">    </span><span class="s2">return</span> destination;</p>
+<p class="p4">};</p>
+<p class="p2"><br></p>
+<p class="p1"><i>//Code adapted from glMatrix JS source code (NEW BSD License)</i></p>
+<p class="p1"><i>//Multiply two matrices, write the result to destionation and return it.</i></p>
+<p class="p4">VECMultiplyMatrix <span class="s3">=</span> <span class="s2">function</span>(m1, m2, destination) {</p>
+<p class="p4"><span class="Apple-converted-space">    </span><span class="s2">if</span>(<span class="s3">!</span>destination) {</p>
+<p class="p4"><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span></span>destination <span class="s3">=</span> <span class="s4">Array</span>();</p>
+<p class="p4"><span class="Apple-converted-space">     </span>}</p>
+<p class="p2"><span class="Apple-converted-space">    </span></p>
+<p class="p4"><span class="Apple-converted-space">    </span><span class="s2">var</span> a00 <span class="s3">=</span> m1[<span class="s5">0</span>], a01 <span class="s3">=</span> m1[<span class="s5">1</span>], a02 <span class="s3">=</span> m1[<span class="s5">2</span>], a03 <span class="s3">=</span> m1[<span class="s5">3</span>];</p>
+<p class="p4"><span class="Apple-converted-space">    </span><span class="s2">var</span> a10 <span class="s3">=</span> m1[<span class="s5">4</span>], a11 <span class="s3">=</span> m1[<span class="s5">5</span>], a12 <span class="s3">=</span> m1[<span class="s5">6</span>], a13 <span class="s3">=</span> m1[<span class="s5">7</span>];</p>
+<p class="p4"><span class="Apple-converted-space">    </span><span class="s2">var</span> a20 <span class="s3">=</span> m1[<span class="s5">8</span>], a21 <span class="s3">=</span> m1[<span class="s5">9</span>], a22 <span class="s3">=</span> m1[<span class="s5">10</span>], a23 <span class="s3">=</span> m1[<span class="s5">11</span>];</p>
+<p class="p4"><span class="Apple-converted-space">    </span><span class="s2">var</span> a30 <span class="s3">=</span> m1[<span class="s5">12</span>], a31 <span class="s3">=</span> m1[<span class="s5">13</span>], a32 <span class="s3">=</span> m1[<span class="s5">14</span>], a33 <span class="s3">=</span> m1[<span class="s5">15</span>];</p>
+<p class="p2"><span class="Apple-converted-space">    </span></p>
+<p class="p4"><span class="Apple-converted-space">    </span><span class="s2">var</span> b00 <span class="s3">=</span> m2[<span class="s5">0</span>], b01 <span class="s3">=</span> m2[<span class="s5">1</span>], b02 <span class="s3">=</span> m2[<span class="s5">2</span>], b03 <span class="s3">=</span> m2[<span class="s5">3</span>];</p>
+<p class="p4"><span class="Apple-converted-space">    </span><span class="s2">var</span> b10 <span class="s3">=</span> m2[<span class="s5">4</span>], b11 <span class="s3">=</span> m2[<span class="s5">5</span>], b12 <span class="s3">=</span> m2[<span class="s5">6</span>], b13 <span class="s3">=</span> m2[<span class="s5">7</span>];</p>
+<p class="p4"><span class="Apple-converted-space">    </span><span class="s2">var</span> b20 <span class="s3">=</span> m2[<span class="s5">8</span>], b21 <span class="s3">=</span> m2[<span class="s5">9</span>], b22 <span class="s3">=</span> m2[<span class="s5">10</span>], b23 <span class="s3">=</span> m2[<span class="s5">11</span>];</p>
+<p class="p4"><span class="Apple-converted-space">    </span><span class="s2">var</span> b30 <span class="s3">=</span> m2[<span class="s5">12</span>], b31 <span class="s3">=</span> m2[<span class="s5">13</span>], b32 <span class="s3">=</span> m2[<span class="s5">14</span>], b33 <span class="s3">=</span> m2[<span class="s5">15</span>];</p>
+<p class="p2"><span class="Apple-converted-space">    </span></p>
+<p class="p4"><span class="Apple-converted-space">    </span>destination[<span class="s5">0</span>] <span class="s3">=</span> b00<span class="s3">*</span>a00 <span class="s3">+</span> b01<span class="s3">*</span>a10 <span class="s3">+</span> b02<span class="s3">*</span>a20 <span class="s3">+</span> b03<span class="s3">*</span>a30;</p>
+<p class="p4"><span class="Apple-converted-space">    </span>destination[<span class="s5">1</span>] <span class="s3">=</span> b00<span class="s3">*</span>a01 <span class="s3">+</span> b01<span class="s3">*</span>a11 <span class="s3">+</span> b02<span class="s3">*</span>a21 <span class="s3">+</span> b03<span class="s3">*</span>a31;</p>
+<p class="p4"><span class="Apple-converted-space">    </span>destination[<span class="s5">2</span>] <span class="s3">=</span> b00<span class="s3">*</span>a02 <span class="s3">+</span> b01<span class="s3">*</span>a12 <span class="s3">+</span> b02<span class="s3">*</span>a22 <span class="s3">+</span> b03<span class="s3">*</span>a32;</p>
+<p class="p4"><span class="Apple-converted-space">    </span>destination[<span class="s5">3</span>] <span class="s3">=</span> b00<span class="s3">*</span>a03 <span class="s3">+</span> b01<span class="s3">*</span>a13 <span class="s3">+</span> b02<span class="s3">*</span>a23 <span class="s3">+</span> b03<span class="s3">*</span>a33;</p>
+<p class="p4"><span class="Apple-converted-space">    </span>destination[<span class="s5">4</span>] <span class="s3">=</span> b10<span class="s3">*</span>a00 <span class="s3">+</span> b11<span class="s3">*</span>a10 <span class="s3">+</span> b12<span class="s3">*</span>a20 <span class="s3">+</span> b13<span class="s3">*</span>a30;</p>
+<p class="p4"><span class="Apple-converted-space">    </span>destination[<span class="s5">5</span>] <span class="s3">=</span> b10<span class="s3">*</span>a01 <span class="s3">+</span> b11<span class="s3">*</span>a11 <span class="s3">+</span> b12<span class="s3">*</span>a21 <span class="s3">+</span> b13<span class="s3">*</span>a31;</p>
+<p class="p4"><span class="Apple-converted-space">    </span>destination[<span class="s5">6</span>] <span class="s3">=</span> b10<span class="s3">*</span>a02 <span class="s3">+</span> b11<span class="s3">*</span>a12 <span class="s3">+</span> b12<span class="s3">*</span>a22 <span class="s3">+</span> b13<span class="s3">*</span>a32;</p>
+<p class="p4"><span class="Apple-converted-space">    </span>destination[<span class="s5">7</span>] <span class="s3">=</span> b10<span class="s3">*</span>a03 <span class="s3">+</span> b11<span class="s3">*</span>a13 <span class="s3">+</span> b12<span class="s3">*</span>a23 <span class="s3">+</span> b13<span class="s3">*</span>a33;</p>
+<p class="p4"><span class="Apple-converted-space">    </span>destination[<span class="s5">8</span>] <span class="s3">=</span> b20<span class="s3">*</span>a00 <span class="s3">+</span> b21<span class="s3">*</span>a10 <span class="s3">+</span> b22<span class="s3">*</span>a20 <span class="s3">+</span> b23<span class="s3">*</span>a30;</p>
+<p class="p4"><span class="Apple-converted-space">    </span>destination[<span class="s5">9</span>] <span class="s3">=</span> b20<span class="s3">*</span>a01 <span class="s3">+</span> b21<span class="s3">*</span>a11 <span class="s3">+</span> b22<span class="s3">*</span>a21 <span class="s3">+</span> b23<span class="s3">*</span>a31;</p>
+<p class="p4"><span class="Apple-converted-space">    </span>destination[<span class="s5">10</span>] <span class="s3">=</span> b20<span class="s3">*</span>a02 <span class="s3">+</span> b21<span class="s3">*</span>a12 <span class="s3">+</span> b22<span class="s3">*</span>a22 <span class="s3">+</span> b23<span class="s3">*</span>a32;</p>
+<p class="p4"><span class="Apple-converted-space">    </span>destination[<span class="s5">11</span>] <span class="s3">=</span> b20<span class="s3">*</span>a03 <span class="s3">+</span> b21<span class="s3">*</span>a13 <span class="s3">+</span> b22<span class="s3">*</span>a23 <span class="s3">+</span> b23<span class="s3">*</span>a33;</p>
+<p class="p4"><span class="Apple-converted-space">    </span>destination[<span class="s5">12</span>] <span class="s3">=</span> b30<span class="s3">*</span>a00 <span class="s3">+</span> b31<span class="s3">*</span>a10 <span class="s3">+</span> b32<span class="s3">*</span>a20 <span class="s3">+</span> b33<span class="s3">*</span>a30;</p>
+<p class="p4"><span class="Apple-converted-space">    </span>destination[<span class="s5">13</span>] <span class="s3">=</span> b30<span class="s3">*</span>a01 <span class="s3">+</span> b31<span class="s3">*</span>a11 <span class="s3">+</span> b32<span class="s3">*</span>a21 <span class="s3">+</span> b33<span class="s3">*</span>a31;</p>
+<p class="p4"><span class="Apple-converted-space">    </span>destination[<span class="s5">14</span>] <span class="s3">=</span> b30<span class="s3">*</span>a02 <span class="s3">+</span> b31<span class="s3">*</span>a12 <span class="s3">+</span> b32<span class="s3">*</span>a22 <span class="s3">+</span> b33<span class="s3">*</span>a32;</p>
+<p class="p4"><span class="Apple-converted-space">    </span>destination[<span class="s5">15</span>] <span class="s3">=</span> b30<span class="s3">*</span>a03 <span class="s3">+</span> b31<span class="s3">*</span>a13 <span class="s3">+</span> b32<span class="s3">*</span>a23 <span class="s3">+</span> b33<span class="s3">*</span>a33;</p>
+<p class="p2"><span class="Apple-converted-space">    </span></p>
+<p class="p4"><span class="Apple-converted-space">    </span><span class="s2">return</span> destination;</p>
+<p class="p4">};</p>
+<p class="p2"><br></p>
+<p class="p1"><i>//Multiply a matrix by a vector</i></p>
+<p class="p1"><i>//The vector is scaled by perspective (dividing by w)</i></p>
+<p class="p1"><i>//scaleFactor is provided for pointBased graphics</i></p>
+<p class="p4">VECMultiplyMatrixVector <span class="s3">=</span> <span class="s2">function</span>(m, vector, destination, scaleFactor) {</p>
+<p class="p4"><span class="Apple-converted-space">    </span><span class="s2">if</span>(<span class="s3">!</span>destination) {</p>
+<p class="p4"><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span></span>destination <span class="s3">=</span> vector;</p>
+<p class="p4"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><span class="Apple-converted-space">    </span></p>
+<p class="p4"><span class="Apple-converted-space">    </span><span class="s2">var</span> vx <span class="s3">=</span> vector[<span class="s5">0</span>];</p>
+<p class="p4"><span class="Apple-converted-space">    </span><span class="s2">var</span> vy <span class="s3">=</span> vector[<span class="s5">1</span>];</p>
+<p class="p4"><span class="Apple-converted-space">    </span><span class="s2">var</span> vz <span class="s3">=</span> vector[<span class="s5">2</span>];</p>
+<p class="p2"><span class="Apple-converted-space">    </span></p>
+<p class="p4"><span class="Apple-converted-space">    </span>destination[<span class="s5">0</span>] <span class="s3">=</span> m[<span class="s5">0</span>]<span class="s3">*</span>vx <span class="s3">+</span> m[<span class="s5">4</span>]<span class="s3">*</span>vy <span class="s3">+</span> m[<span class="s5">8</span>]<span class="s3">*</span>vz <span class="s3">+</span> m[<span class="s5">12</span>];</p>
+<p class="p4"><span class="Apple-converted-space">    </span>destination[<span class="s5">1</span>] <span class="s3">=</span> m[<span class="s5">1</span>]<span class="s3">*</span>vx <span class="s3">+</span> m[<span class="s5">5</span>]<span class="s3">*</span>vy <span class="s3">+</span> m[<span class="s5">9</span>]<span class="s3">*</span>vz <span class="s3">+</span> m[<span class="s5">13</span>];</p>
+<p class="p4"><span class="Apple-converted-space">    </span>destination[<span class="s5">2</span>] <span class="s3">=</span> m[<span class="s5">2</span>]<span class="s3">*</span>vx <span class="s3">+</span> m[<span class="s5">6</span>]<span class="s3">*</span>vy <span class="s3">+</span> m[<span class="s5">10</span>]<span class="s3">*</span>vz <span class="s3">+</span> m[<span class="s5">14</span>];</p>
+<p class="p2"><span class="Apple-converted-space">    </span></p>
+<p class="p4"><span class="Apple-converted-space">    </span><span class="s2">var</span> winv <span class="s3">=</span> <span class="s5">1.0</span><span class="s3">/</span>(m[<span class="s5">3</span>]<span class="s3">*</span>vx <span class="s3">+</span> m[<span class="s5">7</span>]<span class="s3">*</span>vy <span class="s3">+</span> m[<span class="s5">11</span>]<span class="s3">*</span>vz <span class="s3">+</span> m[<span class="s5">15</span>]);</p>
+<p class="p1"><span class="s9"><span class="Apple-converted-space">    </span></span><i>//console.log(w);</i></p>
+<p class="p2"><span class="Apple-converted-space">    </span></p>
+<p class="p1"><span class="s9"><span class="Apple-converted-space">    </span></span><i>//perspective projection</i></p>
+<p class="p4"><span class="Apple-converted-space">    </span>destination[<span class="s5">0</span>] <span class="s3">*=</span> winv;</p>
+<p class="p4"><span class="Apple-converted-space">    </span>destination[<span class="s5">1</span>] <span class="s3">*=</span> winv;</p>
+<p class="p4"><span class="Apple-converted-space">    </span>destination[<span class="s5">2</span>] <span class="s3">*=</span> winv;</p>
+<p class="p2"><span class="Apple-converted-space">    </span></p>
+<p class="p4"><span class="Apple-converted-space">    </span><span class="s2">if</span>(scaleFactor){</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-converted-space">    </span>scaleFactor[<span class="s5">0</span>]<span class="s3">=</span>winv;</p>
+<p class="p4"><span class="Apple-converted-space">    </span>}</p>
+<p class="p4"><span class="Apple-converted-space">    </span><span class="s2">return</span> destination;</p>
+<p class="p4">};</p>
+<p class="p2"><br></p>
+<p class="p1"><i>//Translates a matrix by the provided vector</i></p>
+<p class="p4">VECTranslateMatrix <span class="s3">=</span> <span class="s2">function</span>(vector,m,destination){</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s2">var</span> tx <span class="s3">=</span> vector[<span class="s5">0</span>];</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s2">var</span> ty <span class="s3">=</span> vector[<span class="s5">1</span>];</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s2">var</span> tz <span class="s3">=</span> vector[<span class="s5">2</span>];</p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p5"><span class="s9"><span class="Apple-tab-span">	</span>TMatrix </span><span class="s3">=</span><span class="s9"> </span>VECIdentityMatrix<span class="s9">();</span></p>
+<p class="p4"><span class="Apple-tab-span">	</span>TMatrix[<span class="s5">12</span>] <span class="s3">=</span> tx;</p>
+<p class="p4"><span class="Apple-tab-span">	</span>TMatrix[<span class="s5">13</span>] <span class="s3">=</span> ty;</p>
+<p class="p4"><span class="Apple-tab-span">	</span>TMatrix[<span class="s5">14</span>] <span class="s3">=</span> tz;</p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s2">if</span>(<span class="s3">!</span>destination){</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>destination <span class="s3">=</span> <span class="s6">VECIdentityMatrix</span>();</p>
+<p class="p4"><span class="Apple-tab-span">	</span>}</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s2">if</span>(m){</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s6">VECMultiplyMatrix</span>(destination, TMatrix,<span class="Apple-converted-space">  </span>destination);</p>
+<p class="p6"><span class="s9"><span class="Apple-tab-span">	</span>}</span>else<span class="s9">{</span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s6">VECCopyMatrix</span>(TMatrix,destination);</p>
+<p class="p4"><span class="Apple-tab-span">	</span>}</p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s2">return</span> destination;</p>
+<p class="p4">}</p>
+<p class="p2"><br></p>
+<p class="p1"><i>//Scales a matrix by the provided scale vector</i></p>
+<p class="p4">VECScaleMatrix <span class="s3">=</span> <span class="s2">function</span>(scaleVector,m,destination){</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s2">var</span> sx <span class="s3">=</span> scaleVector[<span class="s5">0</span>];</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s2">var</span> sy <span class="s3">=</span> scaleVector[<span class="s5">1</span>];</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s2">var</span> sz <span class="s3">=</span> scaleVector[<span class="s5">2</span>];</p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p5"><span class="s9"><span class="Apple-tab-span">	</span>SMatrix </span><span class="s3">=</span><span class="s9"> </span>VECIdentityMatrix<span class="s9">();</span></p>
+<p class="p4"><span class="Apple-tab-span">	</span>SMatrix[<span class="s5">0</span>] <span class="s3">=</span> sx;</p>
+<p class="p4"><span class="Apple-tab-span">	</span>SMatrix[<span class="s5">5</span>] <span class="s3">=</span> sy;</p>
+<p class="p4"><span class="Apple-tab-span">	</span>SMatrix[<span class="s5">10</span>] <span class="s3">=</span> sz;</p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s2">if</span>(<span class="s3">!</span>destination){</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>destination <span class="s3">=</span> <span class="s6">VECIdentityMatrix</span>();</p>
+<p class="p4"><span class="Apple-tab-span">	</span>}</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s2">if</span>(m){</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s6">VECMultiplyMatrix</span>(destination,SMatrix, destination);</p>
+<p class="p6"><span class="s9"><span class="Apple-tab-span">	</span>}</span>else<span class="s9">{</span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s6">VECCopyMatrix</span>(SMatrix, destination);</p>
+<p class="p4"><span class="Apple-tab-span">	</span>}</p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s2">return</span> destination;</p>
+<p class="p4">}</p>
+<p class="p2"><br></p>
+<p class="p1"><i>//VECRotateMatrix is based on glMatrix JS source code (NEW BSD licensed)</i></p>
+<p class="p1"><i>//Rotates the provided matrix by the angle around the axis.</i></p>
+<p class="p4">VECRotateMatrix <span class="s3">=</span> <span class="s2">function</span>(angle, axis, mat, destination) {</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">if</span>(<span class="s3">!</span>mat){</p>
+<p class="p5"><span class="s9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>mat </span><span class="s3">=</span><span class="s9"> </span>VECIdentityMatrix<span class="s9">();</span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>}</p>
+<p class="p4"><span class="Apple-converted-space">        </span><span class="s2">var</span> x <span class="s3">=</span> axis[<span class="s5">0</span>], y <span class="s3">=</span> axis[<span class="s5">1</span>], z <span class="s3">=</span> axis[<span class="s5">2</span>];</p>
+<p class="p4"><span class="Apple-converted-space">        </span><span class="s2">var</span> len <span class="s3">=</span> <span class="s4">Math</span>.<span class="s6">sqrt</span>(x<span class="s3">*</span>x <span class="s3">+</span> y<span class="s3">*</span>y <span class="s3">+</span> z<span class="s3">*</span>z);</p>
+<p class="p4"><span class="Apple-converted-space">        </span><span class="s2">if</span><span class="s6"> </span>(<span class="s3">!</span>len) { <span class="s2">return</span> <span class="s5">null</span>; }</p>
+<p class="p4"><span class="Apple-converted-space">        </span><span class="s2">if</span><span class="s6"> </span>(len <span class="s3">!=</span> <span class="s5">1</span>) {</p>
+<p class="p4"><span class="Apple-converted-space">                </span>len <span class="s3">=</span> <span class="s5">1</span> <span class="s3">/</span> len;</p>
+<p class="p4"><span class="Apple-converted-space">                </span>x <span class="s3">*=</span> len;<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-converted-space">                </span>y <span class="s3">*=</span> len;<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-converted-space">                </span>z <span class="s3">*=</span> len;</p>
+<p class="p4"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><span class="Apple-converted-space">        </span></p>
+<p class="p4"><span class="Apple-converted-space">        </span><span class="s2">var</span> s <span class="s3">=</span> <span class="s4">Math</span>.<span class="s6">sin</span>(angle);</p>
+<p class="p4"><span class="Apple-converted-space">        </span><span class="s2">var</span> c <span class="s3">=</span> <span class="s4">Math</span>.<span class="s6">cos</span>(angle);</p>
+<p class="p4"><span class="Apple-converted-space">        </span><span class="s2">var</span> t <span class="s3">=</span> <span class="s5">1</span><span class="s3">-</span>c;</p>
+<p class="p2"><span class="Apple-converted-space">        </span></p>
+<p class="p1"><span class="s9"><span class="Apple-converted-space">        </span></span><i>// Cache the matrix values (makes for huge speed increases!)</i></p>
+<p class="p4"><span class="Apple-converted-space">        </span><span class="s2">var</span> a00 <span class="s3">=</span> mat[<span class="s5">0</span>], a01 <span class="s3">=</span> mat[<span class="s5">1</span>], a02 <span class="s3">=</span> mat[<span class="s5">2</span>], a03 <span class="s3">=</span> mat[<span class="s5">3</span>];</p>
+<p class="p4"><span class="Apple-converted-space">        </span><span class="s2">var</span> a10 <span class="s3">=</span> mat[<span class="s5">4</span>], a11 <span class="s3">=</span> mat[<span class="s5">5</span>], a12 <span class="s3">=</span> mat[<span class="s5">6</span>], a13 <span class="s3">=</span> mat[<span class="s5">7</span>];</p>
+<p class="p4"><span class="Apple-converted-space">        </span><span class="s2">var</span> a20 <span class="s3">=</span> mat[<span class="s5">8</span>], a21 <span class="s3">=</span> mat[<span class="s5">9</span>], a22 <span class="s3">=</span> mat[<span class="s5">10</span>], a23 <span class="s3">=</span> mat[<span class="s5">11</span>];</p>
+<p class="p2"><span class="Apple-converted-space">        </span></p>
+<p class="p1"><span class="s9"><span class="Apple-converted-space">        </span></span><i>// Construct the elements of the rotation matrix</i></p>
+<p class="p4"><span class="Apple-converted-space">        </span><span class="s2">var</span> b00 <span class="s3">=</span> x<span class="s3">*</span>x<span class="s3">*</span>t <span class="s3">+</span> c, b01 <span class="s3">=</span> y<span class="s3">*</span>x<span class="s3">*</span>t <span class="s3">+</span> z<span class="s3">*</span>s, b02 <span class="s3">=</span> z<span class="s3">*</span>x<span class="s3">*</span>t <span class="s3">-</span> y<span class="s3">*</span>s;</p>
+<p class="p4"><span class="Apple-converted-space">        </span><span class="s2">var</span> b10 <span class="s3">=</span> x<span class="s3">*</span>y<span class="s3">*</span>t <span class="s3">-</span> z<span class="s3">*</span>s, b11 <span class="s3">=</span> y<span class="s3">*</span>y<span class="s3">*</span>t <span class="s3">+</span> c, b12 <span class="s3">=</span> z<span class="s3">*</span>y<span class="s3">*</span>t <span class="s3">+</span> x<span class="s3">*</span>s;</p>
+<p class="p4"><span class="Apple-converted-space">        </span><span class="s2">var</span> b20 <span class="s3">=</span> x<span class="s3">*</span>z<span class="s3">*</span>t <span class="s3">+</span> y<span class="s3">*</span>s, b21 <span class="s3">=</span> y<span class="s3">*</span>z<span class="s3">*</span>t <span class="s3">-</span> x<span class="s3">*</span>s, b22 <span class="s3">=</span> z<span class="s3">*</span>z<span class="s3">*</span>t <span class="s3">+</span> c;</p>
+<p class="p2"><span class="Apple-converted-space">        </span></p>
+<p class="p4"><span class="Apple-converted-space">        </span><span class="s2">if</span>(<span class="s3">!</span>destination) {<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-converted-space">                </span>destination <span class="s3">=</span> mat<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-converted-space">        </span>} <span class="s2">else</span> <span class="s2">if</span>(mat <span class="s3">!=</span> destination) {</p>
+<p class="p4"><span class="Apple-converted-space">                </span>destination[<span class="s5">12</span>] <span class="s3">=</span> mat[<span class="s5">12</span>];</p>
+<p class="p4"><span class="Apple-converted-space">                </span>destination[<span class="s5">13</span>] <span class="s3">=</span> mat[<span class="s5">13</span>];</p>
+<p class="p4"><span class="Apple-converted-space">                </span>destination[<span class="s5">14</span>] <span class="s3">=</span> mat[<span class="s5">14</span>];</p>
+<p class="p4"><span class="Apple-converted-space">                </span>destination[<span class="s5">15</span>] <span class="s3">=</span> mat[<span class="s5">15</span>];</p>
+<p class="p4"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><span class="Apple-converted-space">        </span></p>
+<p class="p1"><span class="s9"><span class="Apple-converted-space">        </span></span><i>// Perform rotation-specific matrix multiplication</i></p>
+<p class="p4"><span class="Apple-converted-space">        </span>destination[<span class="s5">0</span>] <span class="s3">=</span> a00<span class="s3">*</span>b00 <span class="s3">+</span> a10<span class="s3">*</span>b01 <span class="s3">+</span> a20<span class="s3">*</span>b02;</p>
+<p class="p4"><span class="Apple-converted-space">        </span>destination[<span class="s5">1</span>] <span class="s3">=</span> a01<span class="s3">*</span>b00 <span class="s3">+</span> a11<span class="s3">*</span>b01 <span class="s3">+</span> a21<span class="s3">*</span>b02;</p>
+<p class="p4"><span class="Apple-converted-space">        </span>destination[<span class="s5">2</span>] <span class="s3">=</span> a02<span class="s3">*</span>b00 <span class="s3">+</span> a12<span class="s3">*</span>b01 <span class="s3">+</span> a22<span class="s3">*</span>b02;</p>
+<p class="p4"><span class="Apple-converted-space">        </span>destination[<span class="s5">3</span>] <span class="s3">=</span> a03<span class="s3">*</span>b00 <span class="s3">+</span> a13<span class="s3">*</span>b01 <span class="s3">+</span> a23<span class="s3">*</span>b02;</p>
+<p class="p2"><span class="Apple-converted-space">        </span></p>
+<p class="p4"><span class="Apple-converted-space">        </span>destination[<span class="s5">4</span>] <span class="s3">=</span> a00<span class="s3">*</span>b10 <span class="s3">+</span> a10<span class="s3">*</span>b11 <span class="s3">+</span> a20<span class="s3">*</span>b12;</p>
+<p class="p4"><span class="Apple-converted-space">        </span>destination[<span class="s5">5</span>] <span class="s3">=</span> a01<span class="s3">*</span>b10 <span class="s3">+</span> a11<span class="s3">*</span>b11 <span class="s3">+</span> a21<span class="s3">*</span>b12;</p>
+<p class="p4"><span class="Apple-converted-space">        </span>destination[<span class="s5">6</span>] <span class="s3">=</span> a02<span class="s3">*</span>b10 <span class="s3">+</span> a12<span class="s3">*</span>b11 <span class="s3">+</span> a22<span class="s3">*</span>b12;</p>
+<p class="p4"><span class="Apple-converted-space">        </span>destination[<span class="s5">7</span>] <span class="s3">=</span> a03<span class="s3">*</span>b10 <span class="s3">+</span> a13<span class="s3">*</span>b11 <span class="s3">+</span> a23<span class="s3">*</span>b12;</p>
+<p class="p2"><span class="Apple-converted-space">        </span></p>
+<p class="p4"><span class="Apple-converted-space">        </span>destination[<span class="s5">8</span>] <span class="s3">=</span> a00<span class="s3">*</span>b20 <span class="s3">+</span> a10<span class="s3">*</span>b21 <span class="s3">+</span> a20<span class="s3">*</span>b22;</p>
+<p class="p4"><span class="Apple-converted-space">        </span>destination[<span class="s5">9</span>] <span class="s3">=</span> a01<span class="s3">*</span>b20 <span class="s3">+</span> a11<span class="s3">*</span>b21 <span class="s3">+</span> a21<span class="s3">*</span>b22;</p>
+<p class="p4"><span class="Apple-converted-space">        </span>destination[<span class="s5">10</span>] <span class="s3">=</span> a02<span class="s3">*</span>b20 <span class="s3">+</span> a12<span class="s3">*</span>b21 <span class="s3">+</span> a22<span class="s3">*</span>b22;</p>
+<p class="p4"><span class="Apple-converted-space">        </span>destination[<span class="s5">11</span>] <span class="s3">=</span> a03<span class="s3">*</span>b20 <span class="s3">+</span> a13<span class="s3">*</span>b21 <span class="s3">+</span> a23<span class="s3">*</span>b22;</p>
+<p class="p4"><span class="Apple-converted-space">        </span><span class="s2">return</span> destination;</p>
+<p class="p4">};</p>
+<p class="p2"><br></p>
+<p class="p1"><i>//VECFrustumMatrix function based on glMatrix JS source code (NEW BSD licensed)</i></p>
+<p class="p1"><i>//Creates the Frustum projection Matrix</i></p>
+<p class="p4">VECFrustumMatrix <span class="s3">=</span> <span class="s2">function</span>(left, right, bottom, top, near, far, dest) {</p>
+<p class="p4"><span class="Apple-converted-space">        </span><span class="s2">if</span>(<span class="s3">!</span>dest) { dest <span class="s3">=</span> <span class="s4">Array</span>(); }</p>
+<p class="p4"><span class="Apple-converted-space">        </span><span class="s2">var</span> rl <span class="s3">=</span> (right <span class="s3">-</span> left);</p>
+<p class="p4"><span class="Apple-converted-space">        </span><span class="s2">var</span> tb <span class="s3">=</span> (top <span class="s3">-</span> bottom);</p>
+<p class="p4"><span class="Apple-converted-space">        </span><span class="s2">var</span> fn <span class="s3">=</span> (far <span class="s3">-</span> near);</p>
+<p class="p4"><span class="Apple-converted-space">        </span>dest[<span class="s5">0</span>] <span class="s3">=</span> (near<span class="s3">*</span><span class="s5">2</span>) <span class="s3">/</span> rl;</p>
+<p class="p4"><span class="Apple-converted-space">        </span>dest[<span class="s5">1</span>] <span class="s3">=</span> <span class="s5">0</span>;</p>
+<p class="p4"><span class="Apple-converted-space">        </span>dest[<span class="s5">2</span>] <span class="s3">=</span> <span class="s5">0</span>;</p>
+<p class="p4"><span class="Apple-converted-space">        </span>dest[<span class="s5">3</span>] <span class="s3">=</span> <span class="s5">0</span>;</p>
+<p class="p4"><span class="Apple-converted-space">        </span>dest[<span class="s5">4</span>] <span class="s3">=</span> <span class="s5">0</span>;</p>
+<p class="p4"><span class="Apple-converted-space">        </span>dest[<span class="s5">5</span>] <span class="s3">=</span> (near<span class="s3">*</span><span class="s5">2</span>) <span class="s3">/</span> tb;</p>
+<p class="p4"><span class="Apple-converted-space">        </span>dest[<span class="s5">6</span>] <span class="s3">=</span> <span class="s5">0</span>;</p>
+<p class="p4"><span class="Apple-converted-space">        </span>dest[<span class="s5">7</span>] <span class="s3">=</span> <span class="s5">0</span>;</p>
+<p class="p4"><span class="Apple-converted-space">        </span>dest[<span class="s5">8</span>] <span class="s3">=</span> (right <span class="s3">+</span> left) <span class="s3">/</span> rl;</p>
+<p class="p4"><span class="Apple-converted-space">        </span>dest[<span class="s5">9</span>] <span class="s3">=</span> (top <span class="s3">+</span> bottom) <span class="s3">/</span> tb;</p>
+<p class="p4"><span class="Apple-converted-space">        </span>dest[<span class="s5">10</span>] <span class="s3">=</span> <span class="s3">-</span>(far <span class="s3">+</span> near) <span class="s3">/</span> fn;</p>
+<p class="p4"><span class="Apple-converted-space">        </span>dest[<span class="s5">11</span>] <span class="s3">=</span> <span class="s3">-</span><span class="s5">1</span>;</p>
+<p class="p4"><span class="Apple-converted-space">        </span>dest[<span class="s5">12</span>] <span class="s3">=</span> <span class="s5">0</span>;</p>
+<p class="p4"><span class="Apple-converted-space">        </span>dest[<span class="s5">13</span>] <span class="s3">=</span> <span class="s5">0</span>;</p>
+<p class="p4"><span class="Apple-converted-space">        </span>dest[<span class="s5">14</span>] <span class="s3">=</span> <span class="s3">-</span>(far<span class="s3">*</span>near<span class="s3">*</span><span class="s5">2</span>) <span class="s3">/</span> fn;</p>
+<p class="p4"><span class="Apple-converted-space">        </span>dest[<span class="s5">15</span>] <span class="s3">=</span> <span class="s5">0</span>;</p>
+<p class="p4"><span class="Apple-converted-space">        </span><span class="s2">return</span> dest;</p>
+<p class="p4">};</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p1"><i>//VECPerspectiveMatrix function based on glMatrix JS source code (NEW BSD licensed)</i></p>
+<p class="p1"><i>//Creates the Frustum matrix from other perspective parameters.</i></p>
+<p class="p4">VECPerspectiveMatrix <span class="s3">=</span> <span class="s2">function</span>(fovy, aspect, near, far, dest) {</p>
+<p class="p4"><span class="Apple-converted-space">        </span><span class="s2">var</span> top <span class="s3">=</span> near<span class="s3">*</span><span class="s4">Math</span>.<span class="s6">tan</span>(fovy<span class="s3">*</span><span class="s4">Math</span>.PI <span class="s3">/</span> <span class="s5">360.0</span>);</p>
+<p class="p4"><span class="Apple-converted-space">        </span><span class="s2">var</span> right <span class="s3">=</span> top<span class="s3">*</span>aspect;</p>
+<p class="p4"><span class="Apple-converted-space">        </span><span class="s2">return</span> <span class="s6">VECFrustumMatrix</span>(<span class="s3">-</span>right, right, <span class="s3">-</span>top, top, near, far, dest);</p>
+<p class="p4">};</p>
+<p class="p2"><br></p>
+<p class="p1"><i>//VECOrthoMatrix function based on glMatrix JS source code (NEW BSD licensed)</i></p>
+<p class="p1"><i>//Creates a orthogonal projection matrix</i></p>
+<p class="p4">VECOrthoMatrix <span class="s3">=</span> <span class="s2">function</span>(xmin, xmax, ymin, ymax, znear, zfar, destination) {</p>
+<p class="p4"><span class="Apple-converted-space">        </span><span class="s2">if</span>(<span class="s3">!</span>destination) {</p>
+<p class="p4"><span class="Apple-converted-space">        <span class="Apple-tab-span">	</span></span>destination <span class="s3">=</span> <span class="s4">Array</span>();</p>
+<p class="p4"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><span class="Apple-converted-space">        </span></p>
+<p class="p4"><span class="Apple-converted-space">        </span><span class="s2">var</span> xsize <span class="s3">=</span> (xmax <span class="s3">-</span> xmin);</p>
+<p class="p4"><span class="Apple-converted-space">        </span><span class="s2">var</span> ysize <span class="s3">=</span> (ymax <span class="s3">-</span> ymin);</p>
+<p class="p4"><span class="Apple-converted-space">        </span><span class="s2">var</span> zsize <span class="s3">=</span> (zfar <span class="s3">-</span> znear);</p>
+<p class="p2"><span class="Apple-converted-space">        </span></p>
+<p class="p4"><span class="Apple-converted-space">        </span>destination[<span class="s5">0</span>] <span class="s3">=</span> <span class="s5">2</span> <span class="s3">/</span> xsize;</p>
+<p class="p4"><span class="Apple-converted-space">        </span>destination[<span class="s5">1</span>] <span class="s3">=</span> <span class="s5">0</span>;</p>
+<p class="p4"><span class="Apple-converted-space">        </span>destination[<span class="s5">2</span>] <span class="s3">=</span> <span class="s5">0</span>;</p>
+<p class="p4"><span class="Apple-converted-space">        </span>destination[<span class="s5">3</span>] <span class="s3">=</span> <span class="s5">0</span>;</p>
+<p class="p2"><span class="Apple-converted-space">        </span></p>
+<p class="p4"><span class="Apple-converted-space">        </span>destination[<span class="s5">4</span>] <span class="s3">=</span> <span class="s5">0</span>;</p>
+<p class="p4"><span class="Apple-converted-space">        </span>destination[<span class="s5">5</span>] <span class="s3">=</span> <span class="s5">2</span> <span class="s3">/</span> ysize;</p>
+<p class="p4"><span class="Apple-converted-space">        </span>destination[<span class="s5">6</span>] <span class="s3">=</span> <span class="s5">0</span>;</p>
+<p class="p4"><span class="Apple-converted-space">        </span>destination[<span class="s5">7</span>] <span class="s3">=</span> <span class="s5">0</span>;</p>
+<p class="p2"><span class="Apple-converted-space">        </span></p>
+<p class="p4"><span class="Apple-converted-space">        </span>destination[<span class="s5">8</span>] <span class="s3">=</span> <span class="s5">0</span>;</p>
+<p class="p4"><span class="Apple-converted-space">        </span>destination[<span class="s5">9</span>] <span class="s3">=</span> <span class="s5">0</span>;</p>
+<p class="p4"><span class="Apple-converted-space">        </span>destination[<span class="s5">10</span>] <span class="s3">=</span> <span class="s3">-</span><span class="s5">2</span> <span class="s3">/</span> zsize;</p>
+<p class="p4"><span class="Apple-converted-space">        </span>destination[<span class="s5">11</span>] <span class="s3">=</span> <span class="s5">0</span>;</p>
+<p class="p2"><span class="Apple-converted-space">        </span></p>
+<p class="p4"><span class="Apple-converted-space">        </span>destination[<span class="s5">12</span>] <span class="s3">=</span> <span class="s3">-</span>(xmin <span class="s3">+</span> xmax) <span class="s3">/</span> xsize; <span class="s8"><i>//tx</i></span></p>
+<p class="p4"><span class="Apple-converted-space">        </span>destination[<span class="s5">13</span>] <span class="s3">=</span> <span class="s3">-</span>(xmax <span class="s3">+</span> ymin) <span class="s3">/</span> ysize; <span class="s8"><i>//ty</i></span></p>
+<p class="p4"><span class="Apple-converted-space">        </span>destination[<span class="s5">14</span>] <span class="s3">=</span> <span class="s3">-</span>(zfar <span class="s3">+</span> znear) <span class="s3">/</span> zsize; <span class="s8"><i>//tz</i></span></p>
+<p class="p4"><span class="Apple-converted-space">        </span>destination[<span class="s5">15</span>] <span class="s3">=</span> <span class="s5">1</span>;</p>
+<p class="p2"><span class="Apple-converted-space">        </span></p>
+<p class="p4"><span class="Apple-converted-space">        </span><span class="s2">return</span> destination;</p>
+<p class="p4">};</p>
+<p class="p2"><br></p>
+<p class="p1"><i>//</i></p>
+<p class="p1"><i>//GL object. Holds all OpenGL related functions and states.</i></p>
+<p class="p1"><i>//</i></p>
+<p class="p2"><br></p>
+<p class="p4"><span class="s2">function</span> <span class="s6">GL</span>(theContext) {</p>
+<p class="p1"><span class="s9"><span class="Apple-tab-span">	</span></span><i>//Constants for current matrixModes</i></p>
+<p class="p1"><span class="s9"><span class="Apple-tab-span">	</span></span><span class="s2">this</span><span class="s9">.GL_MODELVIEW </span><span class="s3">=</span><span class="s9"> </span><span class="s5">0</span><span class="s9">; </span><i>//Use ModelView Matrix</i></p>
+<p class="p1"><span class="s9"><span class="Apple-converted-space">    </span></span><span class="s2">this</span><span class="s9">.GL_PROJECTION </span><span class="s3">=</span><span class="s9"> </span><span class="s5">1</span><span class="s9">; </span><i>//Use projection Matrix</i></p>
+<p class="p2"><span class="Apple-converted-space">    </span></p>
+<p class="p1"><span class="s9"><span class="Apple-tab-span">	</span></span><i>//Clear bit for glClear, when enabled the framebuffer is cleared.</i></p>
+<p class="p4"><span class="Apple-converted-space">    </span><span class="s2">this</span>.GL_COLOR_BUFFER_BIT <span class="s3">=</span> <span class="s5">0</span>;</p>
+<p class="p1"><span class="s9"><span class="Apple-converted-space">    </span></span><i>//Framebuffer clear color</i></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s2">this</span>.clearColor <span class="s3">=</span> <span class="s4">Array</span>(<span class="s5">0</span>,<span class="s5">0</span>,<span class="s5">0</span>);</p>
+<p class="p2"><span class="Apple-converted-space">    </span></p>
+<p class="p1"><span class="s9"><span class="Apple-tab-span">	</span></span><i>//Current primitives supported by this software.</i></p>
+<p class="p4"><span class="Apple-converted-space">    </span><span class="s2">this</span>.GL_POINTS <span class="s3">=</span> <span class="s5">0</span>;</p>
+<p class="p4"><span class="Apple-converted-space">    </span><span class="s2">this</span>.GL_LINES <span class="s3">=</span> <span class="s5">1</span>;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="s9"><span class="Apple-tab-span">	</span></span><i>//Vertex attributes for glBegin/glEnd.</i></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s2">this</span>.vertices <span class="s3">=</span> <span class="s4">Array</span>();</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s2">this</span>.colors <span class="s3">=</span> <span class="s4">Array</span>();</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s2">this</span>.pointsSizes <span class="s3">=</span> <span class="s4">Array</span>();</p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p1"><span class="s9"><span class="Apple-tab-span">	</span></span><i>//Holds the current canvas context</i></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s2">this</span>.context <span class="s3">=</span> theContext;</p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p1"><span class="s9"><span class="Apple-tab-span">	</span></span><i>//Defines the current matrix to be handled by matrix operations</i></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s2">this</span>.matrixMode <span class="s3">=</span> <span class="s2">this</span>.GL_MODELVIEW;</p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p1"><span class="s9"><span class="Apple-tab-span">	</span></span><i>//Projection and modelView matrix Stacks</i></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s2">this</span>.projectionMatrixStack <span class="s3">=</span> <span class="s4">Array</span>();</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s2">this</span>.modelViewMatrixStack <span class="s3">=</span> <span class="s4">Array</span>();</p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p1"><span class="s9"><span class="Apple-tab-span">	</span></span><i>//Viewport definitions</i></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s2">this</span>.viewport <span class="s3">=</span> <span class="s2">new</span> <span class="s4">Object</span>();</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s2">this</span>.viewport.x <span class="s3">=</span> <span class="s5">0</span>;</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s2">this</span>.viewport.y <span class="s3">=</span> <span class="s5">0</span>;</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s2">this</span>.viewport.width <span class="s3">=</span> theContext.canvas.width;</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s2">this</span>.viewport.height <span class="s3">=</span> theContext.canvas.height;</p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p1"><span class="s9"><span class="Apple-tab-span">	</span></span><i>//Line width for GL_LINES primitives</i></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s2">this</span>.lineWidth <span class="s3">=</span> <span class="s5">1.0</span>;</p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p1"><span class="s9"><span class="Apple-tab-span">	</span></span><i>//glBegin/glEnd temporary attributes</i></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s2">this</span>.primitiveType <span class="s3">=</span> <span class="s5">1</span>;</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s2">this</span>.currentColor <span class="s3">=</span> <span class="s4">Array</span>(<span class="s5">0</span>,<span class="s5">0</span>,<span class="s5">0</span>);</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s2">this</span>.currentPointSize <span class="s3">=</span> <span class="s5">1</span>;</p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p1"><span class="s9"><span class="Apple-tab-span">	</span></span><i>//Holds all provided primitives until glFlush is called.</i></p>
+<p class="p1"><span class="s9"><span class="Apple-tab-span">	</span></span><span class="s2">this</span><span class="s9">.primitives </span><span class="s3">=</span><span class="s9"> </span><span class="s4">Array</span><span class="s9">(); </span><i>//Primitives to draw</i></p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s2">this</span>.projectionMatrixStack.<span class="s6">push</span>(<span class="s6">VECIdentityMatrix</span>()); <span class="s8"><i>//Initial Projection Matrix</i></span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s2">this</span>.modelViewMatrixStack.<span class="s6">push</span>(<span class="s6">VECIdentityMatrix</span>()); <span class="s8"><i>//Initial View Matrix</i></span></p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p1"><span class="s9"><span class="Apple-tab-span">	</span></span><i>//</i></p>
+<p class="p1"><span class="s9"><span class="Apple-tab-span">	</span></span><i>// GL Functions as in OpenGL 1.x specification</i></p>
+<p class="p1"><span class="s9"><span class="Apple-tab-span">	</span></span><i>//</i></p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p4"><span class="Apple-converted-space">    </span><span class="s2">this</span>.glMatrixMode <span class="s3">=</span> <span class="s2">function</span>(mode) {</p>
+<p class="p4"><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span></span><span class="s2">this</span>.matrixMode <span class="s3">=</span> mode;</p>
+<p class="p4"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p2"><span class="Apple-converted-space">    </span></p>
+<p class="p4"><span class="Apple-converted-space">    </span><span class="s2">this</span>.glLoadIdentity <span class="s3">=</span> <span class="s2">function</span>() {</p>
+<p class="p4"><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span></span><span class="s2">if</span>(<span class="s2">this</span>.matrixMode<span class="s3">==</span><span class="s2">this</span>.GL_MODELVIEW){</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span></span><span class="s6">VECIdentityMatrix</span>(<span class="s2">this</span>.modelViewMatrixStack.<span class="s6">last</span>());</p>
+<p class="p4"><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span></span>}<span class="s2">else</span>{</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span></span><span class="s6">VECIdentityMatrix</span>(<span class="s2">this</span>.projectionMatrixStack.<span class="s6">last</span>());</p>
+<p class="p4"><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span></span>}</p>
+<p class="p4"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><span class="Apple-converted-space">    </span></p>
+<p class="p4"><span class="Apple-converted-space">    </span><span class="s2">this</span>.gluPerspective <span class="s3">=</span> <span class="s2">function</span>(fovy, aspect, near, far){</p>
+<p class="p4"><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span></span><span class="s2">if</span>(<span class="s2">this</span>.matrixMode<span class="s3">==</span><span class="s2">this</span>.GL_MODELVIEW){</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span></span><span class="s6">VECPerspectiveMatrix</span>(fovy, aspect, near, far, <span class="s2">this</span>.modelViewMatrixStack.<span class="s6">last</span>());</p>
+<p class="p4"><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span></span>}<span class="s2">else</span>{</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span></span><span class="s6">VECPerspectiveMatrix</span>(fovy, aspect, near, far, <span class="s2">this</span>.projectionMatrixStack.<span class="s6">last</span>());</p>
+<p class="p4"><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span></span>}</p>
+<p class="p4"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><span class="Apple-converted-space">    </span></p>
+<p class="p4"><span class="Apple-converted-space">    </span><span class="s2">this</span>.glOrtho <span class="s3">=</span> <span class="s2">function</span>(xmin, xmax, ymin, ymax, znear, zfar) {</p>
+<p class="p4"><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span></span><span class="s2">if</span>(<span class="s2">this</span>.matrixMode<span class="s3">==</span><span class="s2">this</span>.GL_MODELVIEW){</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span></span><span class="s6">VECOrthoMatrix</span>(xmin, xmax, ymin, ymax, znear, zfar, <span class="s2">this</span>.modelViewMatrixStack.<span class="s6">last</span>());</p>
+<p class="p4"><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span></span>}<span class="s2">else</span>{</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span></span><span class="s6">VECOrthoMatrix</span>(xmin, xmax, ymin, ymax, znear, zfar, <span class="s2">this</span>.projectionMatrixStack.<span class="s6">last</span>());</p>
+<p class="p4"><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span></span>}</p>
+<p class="p4"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p4"><span class="Apple-converted-space">    </span><span class="s2">this</span>.glViewport <span class="s3">=</span> <span class="s2">function</span>(x, y, width, height) {</p>
+<p class="p4"><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span></span><span class="s2">this</span>.viewport.x <span class="s3">=</span> x;</p>
+<p class="p4"><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span></span><span class="s2">this</span>.viewport.y <span class="s3">=</span> y;</p>
+<p class="p4"><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span></span><span class="s2">this</span>.viewport.width <span class="s3">=</span> width;</p>
+<p class="p4"><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span></span><span class="s2">this</span>.viewport.height <span class="s3">=</span> height;</p>
+<p class="p4"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><span class="Apple-converted-space">    </span></p>
+<p class="p4"><span class="Apple-converted-space">    </span><span class="s2">this</span>.glClearColor <span class="s3">=</span> <span class="s2">function</span>(r,g,b) {</p>
+<p class="p4"><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span></span><span class="s2">this</span>.clearColor <span class="s3">=</span> <span class="s4">Array</span>(r,g,b);</p>
+<p class="p4"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><span class="Apple-converted-space">    </span></p>
+<p class="p4"><span class="Apple-converted-space">    </span><span class="s2">this</span>.glClear <span class="s3">=</span> <span class="s2">function</span>(flag) {</p>
+<p class="p4"><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span></span><span class="s2">if</span>(flag<span class="s3">==</span><span class="s2">this</span>.GL_COLOR_BUFFER_BIT){</p>
+<p class="p1"><span class="s9"><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span></span><i>//Here we need to use fillRect method of canvas because clearRect can not be used with a custom color.</i></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span></span><span class="s2">this</span>.context.fillStyle <span class="s3">=</span> <span class="s6">rgb</span>(<span class="s2">this</span>.clearColor[<span class="s5">0</span>], <span class="s2">this</span>.clearColor[<span class="s5">1</span>], <span class="s2">this</span>.clearColor[<span class="s5">2</span>]);</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span></span><span class="s2">this</span>.context.<span class="s6">fillRect</span>(<span class="s2">this</span>.viewport.x,<span class="s2">this</span>.viewport.y,<span class="s2">this</span>.viewport.width,<span class="s2">this</span>.viewport.height);</p>
+<p class="p4"><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span></span>}</p>
+<p class="p4"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p4"><span class="Apple-converted-space">    </span><span class="s2">this</span>.glBegin <span class="s3">=</span> <span class="s2">function</span>(primitiveType) {</p>
+<p class="p4"><span class="Apple-converted-space">        </span><span class="s2">this</span>.primitiveType <span class="s3">=</span> primitiveType;</p>
+<p class="p4"><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span></span><span class="s2">this</span>.vertices.length <span class="s3">=</span> <span class="s5">0</span>;</p>
+<p class="p4"><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span></span><span class="s2">this</span>.colors.length <span class="s3">=</span> <span class="s5">0</span>;</p>
+<p class="p4"><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span></span><span class="s2">this</span>.pointsSizes.length <span class="s3">=</span> <span class="s5">0</span>;</p>
+<p class="p4"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p4"><span class="Apple-converted-space">    </span><span class="s2">this</span>.glEnd <span class="s3">=</span> <span class="s2">function</span>() {</p>
+<p class="p4"><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span></span><span class="s2">if</span>(<span class="s2">this</span>.vertices.length<span class="s3">&gt;</span><span class="s5">0</span>){</p>
+<p class="p1"><span class="s9"><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span></span><i>//primitives are saved as objects with vertices, colors,</i></p>
+<p class="p1"><span class="s9"><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span></span><i>// type, projection/viewmode matrices and pointsSizes for GL_POINTS</i></p>
+<p class="p4"><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s2">var</span> currentPrimitives <span class="s3">=</span> <span class="s2">new</span> <span class="s4">Object</span>();</p>
+<p class="p4"><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>currentPrimitives.type <span class="s3">=</span> <span class="s2">this</span>.primitiveType;</p>
+<p class="p4"><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>currentPrimitives.vertices <span class="s3">=</span> <span class="s2">this</span>.vertices.<span class="s6">slice</span>();</p>
+<p class="p4"><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>currentPrimitives.colors <span class="s3">=</span> <span class="s2">this</span>.colors.<span class="s6">slice</span>();</p>
+<p class="p4"><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>currentPrimitives.modelViewMatrix <span class="s3">=</span> <span class="s2">this</span>.modelViewMatrixStack.<span class="s6">last</span>().<span class="s6">slice</span>();</p>
+<p class="p4"><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>currentPrimitives.projectionMatrix <span class="s3">=</span> <span class="s2">this</span>.projectionMatrixStack.<span class="s6">last</span>().<span class="s6">slice</span>();</p>
+<p class="p4"><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s2">if</span>(<span class="s2">this</span>.primitiveType<span class="s3">==</span><span class="s2">this</span>.GL_POINTS){</p>
+<p class="p4"><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>currentPrimitives.pointsSizes <span class="s3">=</span> <span class="s2">this</span>.pointsSizes.<span class="s6">slice</span>();</p>
+<p class="p4"><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>}</p>
+<p class="p4"><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s2">this</span>.primitives.<span class="s6">push</span>(currentPrimitives);</p>
+<p class="p4"><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span></span>}</p>
+<p class="p4"><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span></span><span class="s2">this</span>.vertices.length <span class="s3">=</span> <span class="s5">0</span>;</p>
+<p class="p4"><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span></span><span class="s2">this</span>.colors.length <span class="s3">=</span> <span class="s5">0</span>;</p>
+<p class="p4"><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span></span><span class="s2">this</span>.pointsSizes.length <span class="s3">=</span> <span class="s5">0</span>;</p>
+<p class="p4"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p4"><span class="Apple-converted-space">    </span><span class="s2">this</span>.glVertex <span class="s3">=</span> <span class="s2">function</span>(x, y, z) {</p>
+<p class="p4"><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span></span><span class="s2">this</span>.colors.<span class="s6">push</span>(<span class="s2">this</span>.currentColor.<span class="s6">slice</span>());</p>
+<p class="p4"><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span></span><span class="s2">this</span>.vertices.<span class="s6">push</span>(<span class="s4">Array</span>(x,y,z));<span class="Apple-converted-space"> </span></p>
+<p class="p4"><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span></span><span class="s2">if</span>(<span class="s2">this</span>.primitiveType<span class="s3">==</span><span class="s2">this</span>.GL_POINTS){</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span></span><span class="s2">this</span>.pointsSizes.<span class="s6">push</span>(<span class="s2">this</span>.currentPointSize);</p>
+<p class="p4"><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span></span>}</p>
+<p class="p4"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><span class="Apple-converted-space">    </span></p>
+<p class="p4"><span class="Apple-converted-space">    </span><span class="s2">this</span>.glColor <span class="s3">=</span> <span class="s2">function</span>(r, g, b) {</p>
+<p class="p4"><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span></span><span class="s2">this</span>.currentColor[<span class="s5">0</span>] <span class="s3">=</span> r;</p>
+<p class="p4"><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span></span><span class="s2">this</span>.currentColor[<span class="s5">1</span>] <span class="s3">=</span> g;</p>
+<p class="p4"><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span></span><span class="s2">this</span>.currentColor[<span class="s5">2</span>] <span class="s3">=</span> b;</p>
+<p class="p4"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><span class="Apple-converted-space">    </span></p>
+<p class="p4"><span class="Apple-converted-space">    </span><span class="s2">this</span>.glPointSize <span class="s3">=</span> <span class="s2">function</span>(pointSize){</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-converted-space">    </span><span class="s2">this</span>.currentPointSize <span class="s3">=</span> pointSize;</p>
+<p class="p4"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span></span></p>
+<p class="p4"><span class="Apple-converted-space">    </span><span class="s2">this</span>.glTranslate <span class="s3">=</span> <span class="s2">function</span>(tx, ty, tz) {</p>
+<p class="p4"><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span></span><span class="s2">if</span>(<span class="s2">this</span>.matrixMode<span class="s3">==</span><span class="s2">this</span>.GL_MODELVIEW){</p>
+<p class="p4"><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s6">VECTranslateMatrix</span>(<span class="s4">Array</span>(tx,ty,tz),<span class="s2">this</span>.modelViewMatrixStack.<span class="s6">last</span>(),<span class="s2">this</span>.modelViewMatrixStack.<span class="s6">last</span>());</p>
+<p class="p4"><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span></span>}<span class="s2">else</span>{</p>
+<p class="p4"><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s6">VECTranslateMatrix</span>(<span class="s4">Array</span>(tx,ty,tz),<span class="s2">this</span>.projectionMatrixStack.<span class="s6">last</span>(),<span class="s2">this</span>.projectionMatrixStack.<span class="s6">last</span>());</p>
+<p class="p4"><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span></span>}</p>
+<p class="p4"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p4"><span class="Apple-converted-space">    </span><span class="s2">this</span>.glRotate <span class="s3">=</span> <span class="s2">function</span>(theta, rx, ry, rz) {</p>
+<p class="p4"><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span></span><span class="s2">if</span>(<span class="s2">this</span>.matrixMode<span class="s3">==</span><span class="s2">this</span>.GL_MODELVIEW){</p>
+<p class="p4"><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s6">VECRotateMatrix</span>(theta, <span class="s4">Array</span>(rx,ry,rz), <span class="s2">this</span>.modelViewMatrixStack.<span class="s6">last</span>(), <span class="s2">this</span>.modelViewMatrixStack.<span class="s6">last</span>());</p>
+<p class="p4"><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span></span>}<span class="s2">else</span>{</p>
+<p class="p4"><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s6">VECRotateMatrix</span>(theta, <span class="s4">Array</span>(rx,ry,rz), <span class="s2">this</span>.projectionMatrixStack.<span class="s6">last</span>(), <span class="s2">this</span>.projectionMatrixStack.<span class="s6">last</span>());</p>
+<p class="p4"><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span></span>}</p>
+<p class="p4"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p4"><span class="Apple-converted-space">    </span><span class="s2">this</span>.glScale <span class="s3">=</span> <span class="s2">function</span>(sx, sy, sz) {</p>
+<p class="p4"><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span></span><span class="s2">if</span>(<span class="s2">this</span>.matrixMode<span class="s3">==</span><span class="s2">this</span>.GL_MODELVIEW){</p>
+<p class="p4"><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s6">VECScaleMatrix</span>(<span class="s4">Array</span>(sx,sy,sz),<span class="s2">this</span>.modelViewMatrixStack.<span class="s6">last</span>(),<span class="s2">this</span>.modelViewMatrixStack.<span class="s6">last</span>());</p>
+<p class="p4"><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span></span>}<span class="s2">else</span>{</p>
+<p class="p4"><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s6">VECScaleMatrix</span>(<span class="s4">Array</span>(sx,sy,sz),<span class="s2">this</span>.projectionMatrixStack.<span class="s6">last</span>(),<span class="s2">this</span>.projectionMatrixStack.<span class="s6">last</span>());</p>
+<p class="p4"><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span></span>}</p>
+<p class="p4"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><span class="Apple-converted-space">    </span></p>
+<p class="p4"><span class="Apple-converted-space">    </span><span class="s2">this</span>.glPushMatrix <span class="s3">=</span> <span class="s2">function</span>(){</p>
+<p class="p4"><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span></span><span class="s2">if</span>(<span class="s2">this</span>.matrixMode<span class="s3">==</span><span class="s2">this</span>.GL_MODELVIEW){</p>
+<p class="p4"><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s2">this</span>.modelViewMatrixStack.<span class="s6">push</span>(<span class="s2">this</span>.modelViewMatrixStack.<span class="s6">last</span>().<span class="s6">slice</span>());</p>
+<p class="p4"><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span></span>}<span class="s2">else</span>{</p>
+<p class="p4"><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s2">this</span>.projectionMatrixStack.<span class="s6">push</span>(<span class="s2">this</span>.projectionMatrixStack.<span class="s6">last</span>().<span class="s6">slice</span>());</p>
+<p class="p4"><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span></span>}</p>
+<p class="p4"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><span class="Apple-converted-space">    </span></p>
+<p class="p4"><span class="Apple-converted-space">    </span><span class="s2">this</span>.glPopMatrix <span class="s3">=</span> <span class="s2">function</span>(){</p>
+<p class="p4"><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span></span><span class="s2">if</span>(<span class="s2">this</span>.matrixMode<span class="s3">==</span><span class="s2">this</span>.GL_MODELVIEW){</p>
+<p class="p4"><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s2">this</span>.modelViewMatrixStack.<span class="s6">pop</span>();</p>
+<p class="p4"><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span></span>}<span class="s2">else</span>{</p>
+<p class="p4"><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s2">this</span>.projectionMatrixStack.<span class="s6">pop</span>();</p>
+<p class="p4"><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span></span>}</p>
+<p class="p4"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><span class="Apple-converted-space">    </span></p>
+<p class="p4"><span class="Apple-converted-space">    </span><span class="s2">this</span>.glLineWidth <span class="s3">=</span> <span class="s2">function</span>(newWidth){</p>
+<p class="p4"><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span></span><span class="s2">this</span>.lineWidth<span class="s3">=</span>newWidth;</p>
+<p class="p4"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><span class="Apple-converted-space">    </span></p>
+<p class="p1"><span class="s9"><span class="Apple-converted-space">    </span></span><i>//glFlush will draw the scene into the canvas.</i></p>
+<p class="p4"><span class="Apple-converted-space">    </span><span class="s2">this</span>.glFlush <span class="s3">=</span> <span class="s2">function</span>() {</p>
+<p class="p4"><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span></span><span class="s2">var</span> primitiveIndex <span class="s3">=</span> <span class="s5">0</span>;</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-converted-space">    </span><span class="s2">for</span>(primitiveIndex<span class="s3">=</span><span class="s5">0</span>;primitiveIndex<span class="s3">&lt;</span><span class="s2">this</span>.primitives.length;primitiveIndex<span class="s3">++</span>){</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span></span>primitive <span class="s3">=</span> <span class="s2">this</span>.primitives[primitiveIndex];</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span></span><span class="s2">var</span> vertices <span class="s3">=</span> primitive.vertices;</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span></span><span class="s2">var</span> colors <span class="s3">=</span> primitive.colors;</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span></span><span class="s2">var</span> count <span class="s3">=</span> vertices.length;</p>
+<p class="p2"><span class="Apple-tab-span">	</span> <span class="Apple-converted-space">   <span class="Apple-tab-span">	</span></span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span></span><span class="s2">var</span> viewport <span class="s3">=</span> <span class="s2">this</span>.viewport;</p>
+<p class="p2"><span class="Apple-tab-span">	</span> <span class="Apple-converted-space">   <span class="Apple-tab-span">	</span></span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span></span><span class="s2">var</span> modelViewMatrix <span class="s3">=</span> <span class="s2">this</span>.modelViewMatrixStack.<span class="s6">last</span>();</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span></span><span class="s2">var</span> projectionMatrix <span class="s3">=</span> <span class="s2">this</span>.projectionMatrixStack.<span class="s6">last</span>();</p>
+<p class="p2"><span class="Apple-tab-span">	</span> <span class="Apple-converted-space">   <span class="Apple-tab-span">	</span></span></p>
+<p class="p1"><span class="s9"><span class="Apple-tab-span">	</span><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span></span></span><i>//console.log("Model for "+primitiveIndex+":\n"+VECStringMatrix(modelViewMatrix));</i></p>
+<p class="p1"><span class="s9"><span class="Apple-tab-span">	</span><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span></span></span><i>//console.log("Proj for "+primitiveIndex+":\n"+VECStringMatrix(projectionMatrix));</i></p>
+<p class="p2"><span class="Apple-tab-span">	</span> <span class="Apple-converted-space">   <span class="Apple-tab-span">	</span></span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span></span><span class="s2">var</span> projModelViewMatrix <span class="s3">=</span> <span class="s6">VECMultiplyMatrix</span>(projectionMatrix,modelViewMatrix);</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">var</span> perspectiveScales <span class="s3">=</span> <span class="s4">Array</span>();</p>
+<p class="p2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p4"><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s2">for</span>(i<span class="s3">=</span><span class="s5">0</span>;i<span class="s3">&lt;</span>count;i<span class="s3">++</span>){</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>vertex <span class="s3">=</span> vertices[i];</p>
+<p class="p1"><span class="s9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><i>//Vertex Transformations</i></p>
+<p class="p1"><span class="s9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><i>//Works like a vertex shader</i></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">var</span> scaleFactor <span class="s3">=</span> <span class="s4">Array</span>(<span class="s5">1</span>);</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s6">VECMultiplyMatrixVector</span>(projModelViewMatrix, vertex, vertex,scaleFactor);</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>perspectiveScales.<span class="s6">push</span>(scaleFactor[<span class="s5">0</span>]);</p>
+<p class="p2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p1"><span class="s9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><i>//Viewport Transformation</i></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>vertex[<span class="s5">0</span>] <span class="s3">=</span> viewport.width<span class="s3">*</span><span class="s5">0.5</span><span class="s3">*</span>(vertex[<span class="s5">0</span>]<span class="s3">+</span><span class="s5">1.0</span>)<span class="s3">+</span>viewport.x;</p>
+<p class="p1"><span class="s9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><i>//Y is inverted because the canvas is y at top oriented</i></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>vertex[<span class="s5">1</span>] <span class="s3">=</span> viewport.height<span class="s3">-</span>(viewport.height<span class="s3">*</span><span class="s5">0.5</span><span class="s3">*</span>(vertex[<span class="s5">1</span>]<span class="s3">+</span><span class="s5">1.0</span>)<span class="s3">+</span>viewport.y);</p>
+<p class="p4"><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>}</p>
+<p class="p2"><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span></p>
+<p class="p4"><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s2">var</span> canvasContext <span class="s3">=</span> <span class="s2">this</span>.context;</p>
+<p class="p1"><span class="s9"><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span></span><i>//Drawing of the primitives</i></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span></span><span class="s2">if</span>(primitive.type <span class="s3">==</span> <span class="s2">this</span>.GL_POINTS){</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s2">var</span> pointsSizes <span class="s3">=</span> primitive.pointsSizes;</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s2">for</span>(i<span class="s3">=</span><span class="s5">0</span>;i<span class="s3">&lt;</span>count;i<span class="s3">++</span>){</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s2">var</span> vertex <span class="s3">=</span> vertices[i];</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s2">var</span> color <span class="s3">=</span> colors[i];</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s2">var</span> pointSize <span class="s3">=</span> pointsSizes[i]<span class="s3">*</span>perspectiveScales[i];</p>
+<p class="p1"><span class="s9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span></span><i>//GL_POINTS are drawn as filled circles with pointSize size</i></p>
+<p class="p1"><span class="s9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span></span><i>//The pointSize is proportional to the perspective scale</i></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>canvasContext.fillStyle <span class="s3">=</span> <span class="s6">rgb</span>(color[<span class="s5">0</span>],color[<span class="s5">1</span>],color[<span class="s5">2</span>]);</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>canvasContext.<span class="s6">beginPath</span>();</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>canvasContext.<span class="s6">arc</span>(vertex[<span class="s5">0</span>], vertex[<span class="s5">1</span>], pointSize, <span class="s5">0</span>, <span class="s5">2</span> <span class="s3">*</span> <span class="s4">Math</span>.PI, <span class="s5">true</span>);</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>canvasContext.<span class="s6">fill</span>();</p>
+<p class="p2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>}</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span></span>}<span class="s2">else</span> <span class="s2">if</span>(primitive.type <span class="s3">==</span> <span class="s2">this</span>.GL_LINES){</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>canvasContext.lineWidth <span class="s3">=</span> <span class="s2">this</span>.lineWidth;</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s2">for</span>(i<span class="s3">=</span><span class="s5">0</span>;i<span class="s3">&lt;</span>count;i<span class="s3">+=</span><span class="s5">2</span>){</p>
+<p class="p1"><span class="s9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span></span><i>//GL_LINES are drawn as canvas lines.</i></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s2">var</span> start <span class="s3">=</span> vertices[i];</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s2">var</span> end <span class="s3">=</span> vertices[i<span class="s3">+</span><span class="s5">1</span>];</p>
+<p class="p2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span> <span class="Apple-converted-space">   <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s2">var</span> colorStart <span class="s3">=</span> colors[i];</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s2">var</span> colorEnd <span class="s3">=</span> colors[i<span class="s3">+</span><span class="s5">1</span>];</p>
+<p class="p2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span> <span class="Apple-converted-space">   <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s2">var</span> x1 <span class="s3">=</span> start[<span class="s5">0</span>];</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s2">var</span> y1 <span class="s3">=</span> start[<span class="s5">1</span>];</p>
+<p class="p2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span> <span class="Apple-converted-space">   <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s2">var</span> x2 <span class="s3">=</span> end[<span class="s5">0</span>];</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s2">var</span> y2 <span class="s3">=</span> end[<span class="s5">1</span>];</p>
+<p class="p2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span> <span class="Apple-converted-space">   <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span></p>
+<p class="p1"><span class="s9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span></span><i>//Creates line with linear gradient simulating linear interpolation.</i></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s2">var</span> grad <span class="s3">=</span> canvasContext.<span class="s6">createLinearGradient</span>(x1, y1, x2, y2);</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>grad.<span class="s6">addColorStop</span>(<span class="s5">0.0</span>,<span class="s6">rgb</span>(colorStart[<span class="s5">0</span>],colorStart[<span class="s5">1</span>],colorStart[<span class="s5">2</span>]));</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>grad.<span class="s6">addColorStop</span>(<span class="s5">1.0</span>,<span class="s6">rgb</span>(colorEnd[<span class="s5">0</span>],colorEnd[<span class="s5">1</span>],colorEnd[<span class="s5">2</span>]));</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>canvasContext.strokeStyle <span class="s3">=</span> grad;</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>canvasContext.<span class="s6">beginPath</span>();</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>canvasContext.<span class="s6">moveTo</span>(x1,y1);</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>canvasContext.<span class="s6">lineTo</span>(x2,y2);</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>canvasContext.<span class="s6">stroke</span>();</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>}</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span></span>}</p>
+<p class="p4"><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span></span>}</p>
+<p class="p4"><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span></span><span class="s2">this</span>.primitives.length <span class="s3">=</span> <span class="s5">0</span>;</p>
+<p class="p4"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><span class="Apple-converted-space">    </span></p>
+<p class="p1"><span class="s9"><span class="Apple-converted-space">    </span></span><i>//Gets the current matrix for debug purpose.</i></p>
+<p class="p4"><span class="Apple-converted-space">    </span><span class="s2">this</span>.glGetMatrix <span class="s3">=</span> <span class="s2">function</span>(destination) {</p>
+<p class="p4"><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span></span><span class="s2">if</span>(<span class="s2">this</span>.matrixMode<span class="s3">==</span><span class="s2">this</span>.GL_MODELVIEW){</p>
+<p class="p1"><span class="s9"><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span></span><i>//console.log("Teste");</i></p>
+<p class="p4"><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s2">return</span> <span class="s6">VECCopyMatrix</span>(<span class="s2">this</span>.modelViewMatrixStack.<span class="s6">last</span>(),destination);</p>
+<p class="p4"><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span></span>}<span class="s2">else</span>{</p>
+<p class="p4"><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s2">return</span> <span class="s6">VECCopyMatrix</span>(<span class="s2">this</span>.projectionMatrixStack.<span class="s6">last</span>(),destination);</p>
+<p class="p4"><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span></span>}</p>
+<p class="p4"><span class="Apple-converted-space">    </span>}</p>
+<p class="p4">}</p>
+<p class="p2"><br></p>
+<p class="p1"><i>//Function required to update the canvas without flickering.</i></p>
+<p class="p4">window.requestAnimFrame <span class="s3">=</span> (<span class="s2">function</span>(callback){</p>
+<p class="p4"><span class="Apple-converted-space">    </span><span class="s2">return</span> window.requestAnimationFrame ||</p>
+<p class="p4"><span class="Apple-converted-space">    </span>window.webkitRequestAnimationFrame ||</p>
+<p class="p4"><span class="Apple-converted-space">    </span>window.mozRequestAnimationFrame ||</p>
+<p class="p4"><span class="Apple-converted-space">    </span>window.oRequestAnimationFrame ||</p>
+<p class="p4"><span class="Apple-converted-space">    </span>window.msRequestAnimationFrame ||</p>
+<p class="p4"><span class="Apple-converted-space">    </span><span class="s2">function</span>(callback){</p>
+<p class="p4"><span class="Apple-converted-space">        </span>window.<span class="s6">setTimeout</span>(callback, <span class="s5">1000</span> <span class="s3">/</span> <span class="s5">60</span>);</p>
+<p class="p4"><span class="Apple-converted-space">    </span>};</p>
+<p class="p4">})();</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p1"><i>//our current default gl object</i></p>
+<p class="p4"><span class="s2">var</span> gl;</p>
+<p class="p4"><span class="s6">$</span>(document).<span class="s6">ready</span>(<span class="s2">function</span>(){</p>
+<p class="p4"><span class="s2">var</span> canvas <span class="s3">=</span> <span class="s6">$</span>(<span class="s7">"#glCanvas"</span>)[<span class="s5">0</span>];</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s2">if</span>(canvas<span class="s3">!=</span><span class="s5">undefined</span>){</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s2">var</span> context <span class="s3">=</span> canvas.<span class="s6">getContext</span>(<span class="s7">"2d"</span>);</p>
+<p class="p1"><span class="s9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><i>//assigning the context of glCanvas container to our gl object.</i></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>gl <span class="s3">=</span> <span class="s2">new</span> <span class="s6">GL</span>(context);</p>
+<p class="p4"><span class="Apple-tab-span">	</span>}</p>
+<p class="p4">});</p>
+</body>
+</html>

@@ -1,0 +1,107 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<html>
+	<head>
+		<title>Network 3D Web</title>
+		<link type="text/css" href="network3D.css" rel="stylesheet" />
+		<link type="text/css" href="css/eggplant/jquery-ui-1.8.21.custom.css" rel="stylesheet" />
+		<!--	jQuery Related 	-->
+		<script type="text/javascript" src="libraries/jquery-1.7.2.min.js"></script>
+		<script type="text/javascript" src="libraries/jquery-ui-1.8.21.custom.min.js"></script>
+		<script type="text/javascript" src="libraries/jquery.mousewheel.js"></script>
+		<script type="text/javascript" src="libraries/jquery.splitter-0.3.js"></script>
+		<!--
+		<script type="text/javascript" src="libraries/jquery.ba-resize.min.js"></script>
+		-->
+		<link href="jquery.splitter.css" rel="stylesheet"/>
+		<script type="text/javascript" src="libraries/gl-matrix-min.js"></script>
+		<script type="text/javascript" src="libraries/gl-shapes.js"></script>
+		<script type="text/javascript" src="libraries/gl-shader.js"></script>
+		<script type="text/javascript" src="libraries/webgl-utils.js"></script>
+		<script type="text/javascript" src="libraries/webgl-debug.js"></script>
+		<script type="text/javascript" src="libraries/networks.js"></script>
+		
+		<!-- Shaders -->
+		<script id="edges-vertex" type="text/glsl-vertex" src="shaders/edges.vsh"></script>
+		<script id="edges-fragment" type="text/glsl-fragment" src="shaders/edges.fsh"></script>
+
+		
+		<script id="vertices-vertex" type="text/glsl-vertex" src="shaders/vertices.vsh"></script>
+		<script id="vertices-fragment" type="text/glsl-fragment" src="shaders/vertices.fsh"></script>
+		
+		
+		<script type="text/javascript" src="networkViewer.js"></script>
+		<!--
+			<script>document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')</script>
+		-->	
+	</head>
+	
+	
+	<body>
+	
+<div id="mainSplitter">
+<div id="canvasContainer" class="spliter_panel"> <canvas id="networkCanvas"></canvas> </div>
+	<div id="propertiesPanel">
+		<form id="propertiesForm">
+			<div id="showhideSelector" class="propertyButton">
+				<input type="checkbox" id="showEdgesButton" checked="checked" /><label for="showEdgesButton">Edges</label>
+				<input type="checkbox" id="showVerticesButton" checked="checked" /><label for="showVerticesButton">Vertices</label>
+			</div>
+			<div id="orthoPerspectiveSelector" class="propertyButton">
+				<input type="radio" id="perspectiveButton" name="orthoPerspectiveSelector" checked="checked" /><label for="perspectiveButton">Perspective</label>
+				<input type="radio" id="orthogonalButton" name="orthoPerspectiveSelector" /><label for="orthogonalButton">Orthogonal</label>
+			</div>
+		
+			<div class="propertyLabel">Edges Intensity: <span id="intensityValue"></span></div>
+			<div id="intensitySlider" class="slider" ></div>
+			<div class="propertyButton"><input type="checkbox" id="useEdgesDepthCheck" /><label for="useEdgesDepthCheck">Edges Depth Test</label></div>
+			<div class="propertyLabel">Vertex Scale: <span id="scaleValue"></span></div>
+			<div id="scaleSlider" class="slider" ></div>
+			<div class="propertyLabel">Vertex Intensity: <span id="verticesIntensityValue"></span></div>
+			<div id="verticesIntensitySlider" class="slider" ></div>
+			<div class="propertyButton"><input type="checkbox" id="opaqueVerticesCheck" checked="checked" /><label for="opaqueVerticesCheck">Opaque Vertices</label></div>
+			<div class="propertyLabel">Edges Colors Property: 
+				<ol id="edgesColorsProperty" class="selectable">
+				</ol>
+			</div>
+			<div class="propertyLabel">Vertices Colors Property: 
+				<ol id="verticesColorsProperty" class="selectable">
+				</ol>
+			</div>
+			<div class="propertyLabel">Scale Property: 
+				<ol id="sizeScalarProperty" class="selectable">
+				</ol>
+			</div>
+			<div class="propertyLabel">Scale Property Coeff.: <span id="scalePropertyCoeffValue"></span></div>
+			<div id="scalePropertyCoeffSlider" class="slider" ></div>
+			
+			<!--
+			<div class="propertyLabel">Edges Intens. Property: 
+				<ol id="edgesIntensitiesProperty" class="selectable">
+				</ol>
+			</div>
+			<div class="propertyLabel">Edges Intens. Coeff.: <span id="edgesIntensitiesCoeffValue"></span></div>
+			<div id="edgesIntensitiesCoeffSlider" class="slider" ></div>
+			-->
+			<div class="propertyLabel">Vertices Intens. Property: 
+				<ol id="verticesIntensitiesProperty" class="selectable">
+				</ol>
+			</div>
+			<div class="propertyLabel">Vertices Intens. Coeff.: <span id="verticesIntensitiesCoeffValue"></span></div>
+			<div id="verticesIntensitiesCoeffSlider" class="slider" ></div>
+			
+			<div class="propertyLabel">Fast move: </div>
+			<div id="fastMoveSelector" class="propertyButton">
+				<input type="checkbox" id="fastEdgesButton" /><label for="fastEdgesButton">Edges</label>
+				<input type="checkbox" id="fastVerticesButton" /><label for="fastVerticesButton">Vertices</label>
+			</div>
+			
+			<div class="propertyLabel">Legend:</div>
+			<div style="width:180px; padding:5px; margin:auto;"><img style="width:160px;" src="images/legend.png"> </img></div>
+		</form>
+	</div>
+</div>
+<!-- overflow-x:scroll; overflow-y:hidden; white-space:nowrap; -->
+	</body>
+</html>

@@ -1,0 +1,23 @@
+
+body {
+	background-color: black;
+	font-family: Verdana, Helvetica, Arial, sans-serif;
+	font-size: 14px;
+	color: white;
+	
+}
+	
+#editorBox{
+	display:block;
+	width:790px;
+    font-family:Menlo,Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New, monospace;
+
+}
+.editorWrapper{
+	display:block;
+    padding:5px;
+}
+
+a{
+	color:aqua;
+}

@@ -1,0 +1,186 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="1138.47">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 12.0px 0.0px; font: 53.0px 'Helvetica Neue Light'; color: #13003f}
+    p.p2 {margin: 0.0px 0.0px 12.0px 0.0px; font: 20.0px 'Helvetica Neue Light'; color: #164de1}
+    p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 17.0px 'Helvetica Neue Light'; color: #1d0057}
+    p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 17.0px 'Helvetica Neue Light'; color: #1d0057; min-height: 20.0px}
+    p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 22.0px 'Helvetica Neue'; color: #1d0057; min-height: 27.0px}
+    p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 22.0px 'Helvetica Neue'; color: #1d0057}
+    p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px 'Helvetica Neue Light'; min-height: 17.0px}
+    p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px 'Helvetica Neue Light'; color: #1d0057; min-height: 17.0px}
+    p.p10 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px 'Helvetica Neue'; min-height: 17.0px}
+    li.li8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px 'Helvetica Neue Light'}
+    li.li11 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px 'Helvetica Neue'}
+    li.li12 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px 'Helvetica Neue Light'; color: #1700b3}
+    span.s1 {letter-spacing: 0.0px}
+    span.s2 {font: 14.0px 'Helvetica Neue Light'; letter-spacing: 0.0px}
+    span.s3 {font: 18.0px 'Helvetica Neue'; letter-spacing: 0.0px}
+    span.s4 {font: 18.0px 'Helvetica Neue Light'; text-decoration: underline ; letter-spacing: 0.0px; color: #1700b3}
+    span.s5 {font: 18.0px 'Helvetica Neue'; letter-spacing: 0.0px; color: #000000}
+    span.s6 {font: 18.0px 'Helvetica Neue Light'; text-decoration: underline ; letter-spacing: 0.0px}
+    span.s7 {letter-spacing: 0.0px; color: #000000}
+    span.s8 {font: 18.0px 'Helvetica Neue Light'; letter-spacing: 0.0px}
+    span.s9 {text-decoration: underline ; letter-spacing: 0.0px; color: #1700b3}
+    span.s10 {text-decoration: underline ; letter-spacing: 0.0px}
+  </style>
+</head>
+<body>
+<p class="p1"><span class="s1"><i>Shaders</i> - Básico</span></p>
+<p class="p2"><span class="s1">Abordagem de “<i>shaders”</i> em <i>OpenGL</i> <i>3.2</i> e <i>GLSL</i> <i>1.50</i></span></p>
+<p class="p3"><span class="s1">Filipi Nascimento Silva</span></p>
+<p class="p4"><span class="s1"></span><br></p>
+<p class="p3"><span class="s1">Aula para a disciplina de Computação Gráfica da pós graduação do Instituto de Ciências Matemáticas e de Computação</span></p>
+<p class="p4"><span class="s1"></span><br></p>
+<p class="p3"><span class="s1">Tempo de aula: 1 hora e 30 minutos.</span></p>
+<p class="p5"><span class="s1"></span><br></p>
+<p class="p6"><span class="s1">1.Material:</span></p>
+<ul>
+  <ul>
+    <li class="li8"><span class="s2"></span><span class="s1"> 
+    	<a href="shaders/">Apresentação</a> (<a href="shaders.pdf">PDF</a>).
+    </span></li>
+    <li class="li8"><span class="s2"></span><span class="s1"> 
+    	<a href="planoaula.pdf">Plano de Aula</a> (Este documento).
+    </span></li>
+    <li class="li8"><span class="s2"></span><span class="s1"> 
+    	<a href="exercicios.pdf">Exercícios</a>.
+    </span></li>
+    <li class="li8"><span class="s2"></span><span class="s1"> 
+    	Códigos e visualizador de shaders (em breve).
+    </span></li>
+  </ul>
+</ul>
+
+<p class="p6"><span class="s1">2.Objetivos:</span></p>
+<ul>
+  <ul>
+    <li class="li8"><span class="s2"></span><span class="s1">Apresentar ao aluno os conceitos básicos de “Shaders”: “Fragment”, “Vertex” e “Geometry Shader”.</span></li>
+    <li class="li8"><span class="s2"></span><span class="s1">Introduzir e motivar o aluno ao uso de “pipeline” programável para o desenvolvimento de aplicações gráficas.</span></li>
+    <li class="li8"><span class="s2"></span><span class="s1">Fornecer condições para que o aluno possa iniciar o desenvolvimento de aplicações gráficas usando “shaders” em <i>OpenGL 3.2</i>.</span></li>
+  </ul>
+</ul>
+<p class="p6"><span class="s1">3.Resultados:</span></p>
+<ul>
+  <ul>
+    <li class="li8"><span class="s1">O aluno deve entender os principais usos de cada tipo de “shader” assim como suas participações correspondentes no “pipeline” gráfico.</span></li>
+    <li class="li8"><span class="s1">O aluno também deverá preferenciar o uso de “pipeline” programável em seus futuros projetos.</span></li>
+    <li class="li8"><span class="s1">O aluno deverá estar apto a compreender e desenvolver programas “shaders” simples escritos em <i>GLSL</i> para <i>OpenGL 3.2</i>.</span></li>
+    <li class="li8"><span class="s1">Ao término da aula o aluno deve estar motivado para buscar mais informações sobre o assunto, principalmente sobre o uso de “shaders” em sua plataforma/linguagem preferida de desenvolvimento.</span></li>
+  </ul>
+</ul>
+<p class="p6"><span class="s1">4.Metodologia:</span></p>
+<ul>
+  <ul>
+    <li class="li8"><span class="s1">O conteúdo é apresentado por meio de 51 slides.</span></li>
+    <li class="li8"><span class="s1">Detalhes extras e dúvidas são discutidas verbalmente e no quadro negro.</span></li>
+    <li class="li8"><span class="s1">O método de programação de “shaders” em <i>GLSL</i> é apresentado através de exemplos comentados seguidos pela demonstração do resultado gráfico final.</span></li>
+  </ul>
+</ul>
+<p class="p6"><span class="s1">5.Ementa:</span></p>
+<ul>
+  <ul>
+    <li class="li8"><span class="s3"><b>História e Introdução:</b></span><span class="s1"> Contexto histórico do termo “shaders”, evolução de shaders nas <i>GPUs</i>, principais linguagens de programação de “shaders”: <i>DirectX</i>, <i>CG</i>, <i>GLSL</i>.<span class="Apple-converted-space"> </span></span></li>
+  </ul>
+</ul>
+
+<ul>
+  <ul>
+    <li class="li8"><span class="s3"><b>Pipeline Fixo:</b></span><span class="s1"> Principais características do “pipeline” gráfico fixo e do “pipeline” programável. Principais vantagens do “pipeline” programável sobre o fixo.</span></li>
+  </ul>
+</ul>
+
+<ul>
+  <ul>
+    <li class="li8"><span class="s3"><b></b></span><span class="s1">“</span><span class="s3"><b>Shaders” em <i>OpenGL</i>:</b></span><span class="s1"> Evolução dos “shaders” em <i>OpenGL</i>. Comparação entre o core “profile” e o “compatibility profile” do <i>OpenGL 3.2</i>. Requisitos computacionais para se desenvolver com <i>OpenGL 3.2</i>.</span></li>
+  </ul>
+</ul>
+
+<ul>
+  <ul>
+    <li class="li8"><span class="s3"><b>Linguagem <i>GLSL</i>: </b></span><span class="s1">Principais características da linguagem <i>GLSL</i>. Diversos exemplos de diferentes técnicas implementadas em <i>GLSL</i>: Iluminação, iluminação phong, texturização e modo “wireframe” implementado por “geometry shader”.</span></li>
+  </ul>
+</ul>
+
+<ul>
+  <ul>
+    <li class="li8"><span class="s3"><b>Uso de GLSL em OpenGL: </b></span><span class="s1">Apresentação do código <i>OpenGL</i> necessário para preparar e fornecer dados a um programa <i>GLSL</i>.</span></li>
+  </ul>
+</ul>
+<p class="p6"><span class="s1">6.Bibliografia:</span></p>
+<ul>
+  <ul>
+    <li class="li11"><span class="s1"><b>Exemplos em OpenGL 3.2 e 4.0 incluindo shaders<br>
+</b><a href="http://nopper.tv/opengl.html"><span class="s4">http://nopper.tv/opengl.html</span></a></span></li>
+  </ul>
+</ul>
+
+<ul>
+  <ul>
+    <li class="li12"><span class="s5"><b>Especificação OpenGL 3.2 Core Profile<br>
+</b><a href="http://www.opengl.org/registry/doc/glspec32.core.20090803.pdf"><span class="s6">http://www.opengl.org/registry/doc/glspec32.core.20090803.pdf</span></a></span></li>
+  </ul>
+</ul>
+
+<ul>
+  <ul>
+    <li class="li12"><span class="s5"><b>OpenGL Wiki<br>
+</b><a href="http://www.opengl.org/wiki/"><span class="s6">http://www.opengl.org/wiki/</span></a></span></li>
+  </ul>
+</ul>
+
+<ul>
+  <ul>
+    <li class="li12"><span class="s5"><b>Curso de Shaders da Oregon University<br>
+</b><a href="http://web.engr.oregonstate.edu/~mjb/cs519/"><span class="s6">http://web.engr.oregonstate.edu/~mjb/cs519/</span></a></span></li>
+  </ul>
+</ul>
+
+<ul>
+  <ul>
+    <li class="li12"><span class="s5"><b>Tutoriais Lighthouse 3D<br>
+</b><a href="http://www.lighthouse3d.com/tutorials/"><span class="s6">http://www.lighthouse3d.com/tutorials/</span></a></span></li>
+  </ul>
+</ul>
+
+<ul>
+  <ul>
+    <li class="li12"><span class="s5"><b></b></span><span class="s7">David Wolff,</span><span class="s5"><b> OpenGL 4.0 Shading Language Cookbook<br>
+</b><a href="http://www.packtpub.com/opengl-4-0-shading-language-cookbook/book?utm_source=rk&amp;utm_campaign=opengl4-abr1&amp;utm_medium=0811"><span class="s6">http://www.packtpub.com/opengl-4-0-shading-language-cookbook/book?utm_source=rk&amp;utm_campaign=opengl4-abr1&amp;utm_medium=0811</span></a></span></li>
+  </ul>
+</ul>
+
+<ul>
+  <ul>
+    <li class="li11"><span class="s1"><b>Migrating to OpenGL 3.2 Core Profile</b></span><span class="s8"><br>
+<a href="http://nopper.tv/opengl.html"><span class="s9">http://athile.net/library/blog/?p=582</span></a></span></li>
+  </ul>
+</ul>
+
+<ul>
+  <ul>
+    <li class="li11"><span class="s1"><b>Pacote de exemplos de shaders diversos</b></span><span class="s8"><br>
+<a href="http://www.g-truc.net/project-0026.html"><span class="s9">http://www.g-truc.net/project-0026.html</span></a></span></li>
+  </ul>
+</ul>
+
+<ul>
+  <ul>
+    <li class="li12"><span class="s5"><b>WebGL sandboxes</b></span><span class="s7"><br>
+<a href="http://mrdoob.com/139/GLSL_Sandbox"><span class="s10">http://mrdoob.com/139/GLSL_Sandbox</span></a></span></li>
+  </ul>
+</ul>
+<ul>
+  <ul>
+    <li class="li12"><span class="s5"><b>Shader Editor escrito em WebGL</b></span><span class="s7"><br>
+<a href="http://www.kickjs.org/example/shader_editor/shader_editor.html"><span class="s10">http://www.kickjs.org/example/shader_editor/shader_editor.html</span></a></span><span class="s10">sha</span></li>
+  </ul>
+</ul>
+</body>
+</html>

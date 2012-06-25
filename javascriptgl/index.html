@@ -1,0 +1,168 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<html>
+	<head>
+		<title>GLJavascript Tester</title>
+		<link type="text/css" href="JavascriptGL.css" rel="stylesheet" />
+		<script type="text/javascript" src="jquery-1.7.2.min.js"></script>
+		<script type="text/javascript" src="JavascriptGL.js"></script>
+	</head>
+	<body>
+	<h3>Implementation of a OpenGL subset in Javascript using HTML5's canvas</h3>
+	<p>
+		Assignment for Computational Graphics graduate course - ICMC - Universidade de São Paulo <br />
+		Created by Filipi Nacimento Silva (filipinascimento at gmail)
+	</p>
+	
+	<ul>
+	<li><a href="javascriptGL.zip">SourceCode</a></li>
+	<li><a href="JavascriptGLSourceFormatted.html">Commented Javascript GL Class</a></li>
+	</ul>
+	<div style="display: block;">
+    	<label for="editorBox" >Code Editor:</label>
+    	<div class="editorWrapper"><textarea id="editorBox" cols="80" rows="20" id="editorBox">
+
+//Input your openGL commands as gl.glCommand()
+var theta = 0;
+
+animate = function(myAnimate){
+   theta +=0.05;
+   gl.glLineWidth(3.0);
+   gl.glClearColor(80,20,10);
+   gl.glClear(gl.GL_COLOR_BUFFER_BIT);
+	
+    gl.glMatrixMode(gl.GL_PROJECTION);
+    gl.glLoadIdentity();
+    //gl.glOrtho(-1.0,1.0,-1.0,1.0,-1.0,1.0);
+    gl.gluPerspective(80,2,0.1,200);
+    
+    gl.glMatrixMode(gl.GL_MODELVIEW);
+    gl.glLoadIdentity();
+    
+    gl.glTranslate(0,-2, -5);
+	gl.glRotate(0.6,1.0,0,0);
+    gl.glTranslate(0,2, 0);
+	gl.glRotate(theta,0,1.0,0);
+	gl.glScale(2,2,2);
+	gl.glBegin(gl.GL_POINTS);
+		gl.glPointSize(25);
+		
+		gl.glColor(255,20,20);
+		gl.glVertex(-0.5,-0.5,-0.5);
+		
+		gl.glColor(255,255,20);
+		gl.glVertex(0.5,-0.5,-0.5);
+		
+		gl.glColor(128,128,20);
+		gl.glVertex(-0.5,0.5,-0.5);
+		
+		gl.glColor(128,255,20);
+		gl.glVertex(-0.5,-0.5,0.5);
+		
+		gl.glColor(128,256,50);
+		gl.glVertex(0.5,0.5,-0.5);
+		
+		gl.glColor(128,20,20);
+		gl.glVertex(-0.5,0.5,0.5);
+		
+		gl.glColor(255,128,20);
+		gl.glVertex(0.5,-0.5,0.5);
+		
+		gl.glColor(20,128,20);
+		gl.glVertex(0.5,0.5,0.5);
+		
+	gl.glEnd();
+	
+	
+	gl.glBegin(gl.GL_LINES);
+		
+		gl.glColor(255,20,20);
+		gl.glVertex(-0.5,-0.5,-0.5);
+		gl.glColor(255,255,20);
+		gl.glVertex(0.5,-0.5,-0.5);
+		
+		gl.glColor(255,20,20);
+		gl.glVertex(-0.5,-0.5,-0.5);
+		gl.glColor(128,128,20);
+		gl.glVertex(-0.5,0.5,-0.5);
+		
+		gl.glColor(255,20,20);
+		gl.glVertex(-0.5,-0.5,-0.5);
+		gl.glColor(128,255,20);
+		gl.glVertex(-0.5,-0.5,0.5);
+		
+		
+		
+		gl.glColor(255,255,20);
+		gl.glVertex(0.5,-0.5,-0.5);
+		gl.glColor(128,256,50);
+		gl.glVertex(0.5,0.5,-0.5);
+		
+		gl.glColor(255,255,20);
+		gl.glVertex(0.5,-0.5,-0.5);
+		gl.glColor(255,128,20);
+		gl.glVertex(0.5,-0.5,0.5);
+		
+		
+		
+		gl.glColor(128,128,20);
+		gl.glVertex(-0.5,0.5,-0.5);
+		gl.glColor(128,256,50);
+		gl.glVertex(0.5,0.5,-0.5);
+		
+		gl.glColor(128,128,20);
+		gl.glVertex(-0.5,0.5,-0.5);
+		gl.glColor(128,20,20);
+		gl.glVertex(-0.5,0.5,0.5);
+		
+		
+		
+		gl.glColor(128,255,20);
+		gl.glVertex(-0.5,-0.5,0.5);
+		gl.glColor(255,128,20);
+		gl.glVertex(0.5,-0.5,0.5);
+		
+		gl.glColor(128,255,20);
+		gl.glVertex(-0.5,-0.5,0.5);
+		gl.glColor(128,255,20);
+		gl.glVertex(-0.5,0.5,0.5);
+		
+		
+		gl.glColor(20,128,20);
+		gl.glVertex(0.5,0.5,0.5);
+		gl.glColor(128,20,20);
+		gl.glVertex(-0.5,0.5,0.5);
+		
+		gl.glColor(20,128,20);
+		gl.glVertex(0.5,0.5,0.5);
+		gl.glColor(255,128,20);
+		gl.glVertex(0.5,-0.5,0.5);
+		
+		gl.glColor(20,128,20);
+		gl.glVertex(0.5,0.5,0.5);
+		gl.glColor(128,256,50);
+		gl.glVertex(0.5,0.5,-0.5);
+		
+		
+	gl.glEnd();
+	
+    gl.glFlush();
+    
+    
+    //call itself to animate until this function is replaced
+    if(myAnimate==animate){
+    	requestAnimFrame(function(){
+        	animate(myAnimate);
+        });
+    }
+}
+animate(animate);
+</textarea></div>
+    	<button onclick="eval($('#editorBox').val());">Execute</button>
+    </div>
+	<div style="display: block; border:1px solid; width:800px; height:400px;">
+		<canvas id="glCanvas" width="800" height="400"></canvas>
+    </div>
+	</body>
+</html>

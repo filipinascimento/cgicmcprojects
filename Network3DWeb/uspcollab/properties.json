@@ -1,0 +1,8 @@
+{
+	"degree" : "Node Degree",
+	"City" : "City",
+	"Class" : "Class",
+	"Department" : "Department",
+	"Field" : "Field",
+	"ORDER" : ["degree", "City", "Class","Department","Field"]
+}

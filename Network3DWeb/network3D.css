@@ -1,0 +1,49 @@
+
+html, body {
+	background-color: black;
+	font-family: Verdana, Helvetica, Arial, sans-serif;
+	font-size: 12px;
+	color: white;
+	width:  100%;
+	height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+a{
+	color:aqua;
+}
+
+#networkCanvas{
+}
+
+#mainSplitter{
+    position: relative;
+    height: 100%;
+}
+
+#propertiesPanel{
+
+}
+
+.slider{
+	margin:10px 20px 10px 20px;
+}
+
+.propertyLabel{
+	margin:10px 20px 10px 10px;
+}
+.propertyButton{
+	margin:14px 20px 10px 10px;
+	margin-left:auto;
+	margin-right:auto;
+	text-align: center;
+	font-size: 8px;
+}
+
+#feedback { font-size: 1.4em; }
+.selectable .ui-selecting { background: #FECA40;}
+.selectable .ui-selected { background: #F39814; color: black; }
+.selectable { list-style-type: none; margin: 0; padding: 5px; }
+.selectable li { margin: 3px; padding: 0.4em; font-size: 9px; height: 8px; cursor:pointer; }
