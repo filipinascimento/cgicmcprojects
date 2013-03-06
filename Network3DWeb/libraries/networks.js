@@ -5,8 +5,20 @@ function Network() {
 	this.readyEventFunction = function(){
 		
 	};
-	
+	this.positionForName = function(name){
+		var pos = new Array();
+		var nameIndex = this.indexNameMap[name];
+		pos.push(this.positions[nameIndex*3]);
+		pos.push(this.positions[nameIndex*3+1]);
+		pos.push(this.positions[nameIndex*3+2]);
+		return pos;
+	}
 	this.triggerReadyEvent = function(){
+		var i;
+		this.indexNameMap = new Object();
+		for(i=0;i<this.names.length;i++){
+			this.indexNameMap[this.names[i]] = i;
+		}
 		this.readyEventFunction(this);
 	}
 	

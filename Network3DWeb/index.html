@@ -4,17 +4,23 @@
 <html>
 	<head>
 		<title>Network 3D Web</title>
+		<meta content="width=device-width, minimum-scale=1, maximum-scale=1" name="viewport">
 		<link type="text/css" href="network3D.css" rel="stylesheet" />
 		<link type="text/css" href="css/eggplant/jquery-ui-1.8.21.custom.css" rel="stylesheet" />
 		<!--	jQuery Related 	-->
 		<script type="text/javascript" src="libraries/jquery-1.7.2.min.js"></script>
 		<script type="text/javascript" src="libraries/jquery-ui-1.8.21.custom.min.js"></script>
+		<script type="text/javascript" src="libraries/jquery.ui.touch-punch.min.js"></script>
+		
 		<script type="text/javascript" src="libraries/jquery.mousewheel.js"></script>
 		<script type="text/javascript" src="libraries/jquery.splitter-0.3.js"></script>
 		<!--
 		<script type="text/javascript" src="libraries/jquery.ba-resize.min.js"></script>
 		-->
 		<link href="jquery.splitter.css" rel="stylesheet"/>
+		<script type="text/javascript" src="libraries/webgl-2d.js"></script>
+		<script type="text/javascript" src="libraries/utilities.js"></script>
+		<script type="text/javascript" src="libraries/canvasutilities.js"></script>
 		<script type="text/javascript" src="libraries/gl-matrix-min.js"></script>
 		<script type="text/javascript" src="libraries/gl-shapes.js"></script>
 		<script type="text/javascript" src="libraries/gl-shader.js"></script>
@@ -38,10 +44,13 @@
 	</head>
 	
 	
-	<body>
+	<body onclick = "void(0)">
 	
-<div id="mainSplitter">
-<div id="canvasContainer" class="spliter_panel"> <canvas id="networkCanvas"></canvas> </div>
+<div onclick = "void(0)" id="mainSplitter">
+	<div id="canvasContainer" onclick = "void(0)" class="spliter_panel">
+	<canvas  onclick = "void(0)" id="networkCanvas"></canvas> 
+	<canvas  onclick = "void(0)" id="networkCanvas2D"></canvas> 
+	</div>
 	<div id="propertiesPanel">
 		<form id="propertiesForm">
 			<div id="showhideSelector" class="propertyButton">
@@ -98,7 +107,7 @@
 			</div>
 			
 			<div class="propertyLabel">Legend:</div>
-			<div style="width:180px; padding:5px; margin:auto;"><img style="width:160px;" src="images/legend.png"> </img></div>
+			<div style="width:180px; padding:5px; margin:auto;"><img id="legends" style="width:160px;" src="images/legend.png"> </img></div>
 		</form>
 	</div>
 </div>

@@ -1,0 +1,12 @@
+{
+	"degree" : "Node Degree",
+	"D-01" : "Dimension r=01",
+	"D-02" : "Dimension r=02",
+	"D-03" : "Dimension r=03",
+	"D-04" : "Dimension r=04",
+	"D-05" : "Dimension r=05",
+	"D-10" : "Dimension r=10",
+	"D-20" : "Dimension r=20",
+	"D-21" : "Dimension Center",
+	"ORDER" : ["degree","D-01","D-02","D-03","D-04","D-05", "D-10", "D-20", "D-21"]
+}
