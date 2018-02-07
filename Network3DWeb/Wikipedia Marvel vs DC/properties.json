@@ -1,0 +1,9 @@
+{
+	"degree" : "Node Degree",
+	"Filtered_Main_Category" : "Filtered Main Category",
+	"Filtered_Neigh_Category" : "Filtered Neigh Category",
+	"Main_Category" : "Main Category",
+	"Neigh_Category" : "Neigh Category",
+	"Node_InDegree" : "Node InDegree",
+	"ORDER" : ["degree", "Filtered_Main_Category", "Filtered_Neigh_Category", "Main_Category", "Neigh_Category", "Node_InDegree"]
+}

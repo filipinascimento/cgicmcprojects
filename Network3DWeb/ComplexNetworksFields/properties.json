@@ -1,0 +1,11 @@
+{
+	"degree" : "Node Degree",
+	"Abstract" : "Abstract",
+	"Communities_Labels" : "Communities Labels",
+	"Communities_l3" : "Communities l3",
+	"File_Origin" : "File Origin",
+	"Node_InDegree" : "Node InDegree",
+	"Publication_Year" : "Publication Year",
+	"Times_Cited" : "Times Cited",
+	"ORDER" : ["degree", "Abstract", "Communities_Labels", "Communities_l3", "File_Origin", "Node_InDegree", "Publication_Year", "Times_Cited"]
+}

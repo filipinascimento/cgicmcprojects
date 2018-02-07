@@ -212,13 +212,15 @@ var translatePosition = [0,0,0];
 
 var linesIntensity = intensityTransfFunction(80); 		// Global intensity of edges
 var verticesIntensity = intensityTransfFunction(80);	// Global intensity of vertices when non opaque is enabled
-var verticesScale = 1.0;								// Global vertices scale factor
+var verticesScale = 1.0;
+var linesWidth = 1.0;								// Global vertices scale factor
 
 // Enable/Disabled options
 var showEdges = true;									
 var showVertices = true;
 var opaqueVertices = true;	// Vertices are rendered as solids.
 var useEdgesDepth = false;	// Enables the use of EdgesDepth (NOTE: edges are not sorted when depth is enabled. Visual artefacts may occurs.)
+var useDarkBackground = true;
 var usePerspective = true;
 var fastEdges = false;
 var fastVertices = false;
@@ -246,11 +248,20 @@ animation.xRotationSpeed = 0.25;
 animation.yRotationSpeed = 0.1;
 
 
+var dpr = window.devicePixelRatio || 1;
 var displayNames = [];
-
+var displayIndices = [];
+var labelsSize = 20*dpr;
+var labelsFont = labelsSize+"px Helvetica Neue"
+var labelsBoxSize = 20*dpr;
+var labelSymbolSize = dpr*1;
 
 var touchMinScale = 1.0 ;
 var touchCurrentScale = 1.0 ;
+
+var NSet = function() {}
+NSet.prototype.add = function(o) { this[o] = true; }
+NSet.prototype.remove = function(o) { delete this[o]; }
 
 
 function rgb(red, green, blue){
@@ -476,7 +487,7 @@ function initCanvas(){
 									["vertex","normal"]);
 									
 	//assigning the default vertex geometry as a sphere.
-	vertexShape = makeSphere(gl, 1.0, 9, 9);
+	vertexShape = makeSphere(gl, 1.0, 16, 16);
 	//ertexShape = makeBox(gl);
 	
 	//Depth test is essential for the desired effects
@@ -497,9 +508,16 @@ function resizeCanvas(newWidth, newHeight){
 function redraw(){
 	//enables the depthMask in order to clear the depth buffer.
 	gl.depthMask(true);
-	gl.clearColor(0.0, 0.0, 0.0, 1.0);
+	if(useDarkBackground){
+		gl.clearColor(0.0, 0.0, 0.0, 1.0);
+	}else{
+		gl.clearColor(1.0, 1.0, 1.0, 1.0);
+	}
+	
 	gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 	
+	gl.lineWidth(linesWidth);
+
 	//initialize projection and view matrices
 	projectionMatrix = mat4.create();
 	viewMatrix = mat4.create();
@@ -538,12 +556,22 @@ function redraw(){
 		//If opaque is enabled then we disable the transparency.
 		//otherwise we draw the vertices with additive blending.
 		//	Note that for additive blending to work no data must be written to the depthBuffer
-		if(opaqueVertices){
-			gl.disable(gl.BLEND);
+		if(useDarkBackground){
+			if(opaqueVertices){
+				gl.disable(gl.BLEND);
+			}else{
+				gl.enable(gl.BLEND);
+				gl.blendFunc(gl.SRC_ALPHA, gl.ONE);
+				gl.depthMask(false);
+			}
 		}else{
-			gl.enable(gl.BLEND);
-			gl.blendFunc(gl.SRC_ALPHA, gl.ONE);
-			gl.depthMask(false);
+			if(opaqueVertices){
+				gl.disable(gl.BLEND);
+			}else{
+				gl.enable(gl.BLEND);
+				gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+				gl.depthMask(false);
+			}
 		}
 		//Binding VAOs to attributes of the shader (vertex and normal)
 		gl.bindBuffer(gl.ARRAY_BUFFER, vertexShape.vertexObject);
@@ -596,7 +624,7 @@ function redraw(){
 			gl.uniform3fv(verticesShaderProgram.uniforms.color,color);
 			gl.uniform3fv(verticesShaderProgram.uniforms.position,position);
 			//draw the geometry for every position 
-			//FIXME: drawElement overhead is very critical on javascript (need to reduce drawElements calling)
+			//FIXME: drawElement overhead is very critical on javascript (needs to reduce drawElements calling)
 			gl.drawElements(gl.TRIANGLES, vertexShape.numIndices, vertexShape.indexType, 0);
 		}
 		// Disable attributes
@@ -614,8 +642,13 @@ function redraw(){
 		
 		//Edges are rendered with additive blending.
 		gl.enable(gl.BLEND);
-		gl.blendFunc(gl.SRC_ALPHA, gl.ONE);
-		
+		if(useDarkBackground){
+			gl.blendFunc(gl.SRC_ALPHA, gl.ONE);
+		}else{
+			//gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+			gl.blendFuncSeparate( gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA,
+                         gl.ZERO, gl.ONE );
+		}
 		// Enables the use of EdgesDepth (NOTE: edges are not sorted when depth is enabled. Visual artefacts may occurs.)
 		if(!useEdgesDepth){
 			gl.depthMask(false);
@@ -650,10 +683,10 @@ function redraw(){
 	}
 	
 		context2d.clearRect(0, 0, networkCanvas2D.width, networkCanvas2D.height);
-	if(displayNames.length>0){
+	if(displayNames.length>0||displayIndices.length>0){
 		context2d.save();
-		context2d.strokeStyle = "rgba(255, 255, 255, 0.5)";
-		context2d.fillStyle = "rgba(255, 255, 255, 0.5)";
+		context2d.strokeStyle = "rgba(255, 255, 255, 0.25)";
+		context2d.fillStyle = "rgba(255, 255, 255, 0.25)";
 		w2d = networkCanvas2D.width;
 		h2d = networkCanvas2D.height;
 		/*context2d.shadowBlur=0;
@@ -665,12 +698,30 @@ function redraw(){
 		context2d.shadowOffsetX= 0;
 		context2d.shadowOffsetY= 0;
 		*/
-		context2d.font = "18px Futura";
-		for(var nexti=0;nexti<displayNames.length;nexti++){
+		context2d.font = labelsFont;
+		
+		var allDisplayIndices = [];
+		/*for(var nexti=0;nexti<displayNames.length;nexti++){
 			var i = network.indexNameMap[displayNames[nexti]];
-			if(i == undefined){
-				continue;
+			if(i != undefined && i>=0 && i < network.names.length){
+				allDisplayIndices.push(i);
 			}
+		}
+		*/
+		var allDisplaysSet = new NSet();
+		for(var nexti=0;nexti<displayNames.length;nexti++){
+			allDisplaysSet.add(displayNames[nexti]);
+		}
+
+		for(var i=0;i<network.names.length;i++){
+			if(network.names[i] in allDisplaysSet){
+				allDisplayIndices.push(i);
+			}
+		}
+
+		for(var nexti=0;nexti<allDisplayIndices.length;nexti++){
+			var i = allDisplayIndices[nexti];
+			
 			var color = [colorsArray[i*3],colorsArray[i*3+1],colorsArray[i*3+2]];
 			var position = [positionsArray[i*3],positionsArray[i*3+1],positionsArray[i*3+2],1.0];
 			var scale = Math.pow(5*scaleValue[i]/maxScale,scalePropertyCoeff)*verticesScale;
@@ -681,31 +732,59 @@ function redraw(){
 			}
 			var x = w2d/2 + dest[0]*w2d/2.0/dest[3];
 			var y = h2d/2 - dest[1]*h2d/2.0/dest[3];
-			var fontSize = (1.0/dest[2]*10);
 			context2d.translate(x,y);
-			context2d.strokeStyle = rgba(color[0]*255, color[1]*255, color[2]*255, 0.7);
 			
+			
+			if(useDarkBackground){
+				context2d.strokeStyle = rgba(color[0]*255, color[1]*255, color[2]*255, 0.4);
+			}else{
+				context2d.strokeStyle = rgba(color[0]*50+205, color[1]*50+205, color[2]*50+205, 0.80);
+			}
 			context2d.lineWidth = 3;
 			context2d.beginPath();
-			context2d.arc(0,0,1.0/dest[2]*scale*15,0,2*Math.PI);
+			context2d.arc(0,0,1.0/dest[2]*scale*15*labelSymbolSize,0,2*Math.PI);
 			context2d.stroke();
-			context2d.strokeStyle = rgba(color[0]*200+55, color[1]*200+55, color[2]*200+55, 0.5);
+			
+			if(useDarkBackground){
+				context2d.strokeStyle = rgba(color[0]*200+55, color[1]*200+55, color[2]*200+55, 0.75);
+			}else{
+				context2d.strokeStyle = rgba(color[0]*100, color[1]*100, color[2]*100, 0.75);
+			}
+			
 			context2d.beginPath();
-			context2d.arc(0,0,1.0/dest[2]*scale*7.5,0,2*Math.PI);
+			context2d.arc(0,0,1.0/dest[2]*scale*7.5*labelSymbolSize,0,2*Math.PI);
 			context2d.stroke();
-			context2d.strokeStyle = rgba(color[0]*200+55, color[1]*200+55, color[2]*200+55, 0.25);
+			
+			if(useDarkBackground){
+				context2d.strokeStyle = rgba(color[0]*200+55, color[1]*200+55, color[2]*200+55, 0.65);
+			}else{
+				context2d.strokeStyle = rgba(color[0]*50+205, color[1]*50+205, color[2]*50+205, 0.80);
+			}
+			
 			context2d.beginPath();
-			context2d.arc(0,0,1.0/dest[2]*scale*30,0,2*Math.PI);
+			context2d.arc(0,0,1.0/dest[2]*scale*20*labelSymbolSize,0,2*Math.PI);
 			context2d.stroke();
 			
 			var theName = network.names[i];
-			 context2d.fillStyle = rgba(color[0]*100, color[1]*100, color[2]*100, 0.75)
-			 context2d.strokeStyle = rgba(color[0]*255, color[1]*255, color[2]*255, 0.7);
-			context2d.fillRect(2,-25,context2d.measureText(theName).width+6,25);
-			context2d.lineWidth = 2;
-			context2d.strokeRect(2,-25,context2d.measureText(theName).width+6,25);
+			var textSize = context2d.measureText(theName);
 			
-			context2d.fillStyle = "rgba(255, 255, 255, 0.8)";
+			if(useDarkBackground){
+				context2d.fillStyle = rgba(color[0]*100, color[1]*100, color[2]*100, 0.75);
+				context2d.strokeStyle = rgba(color[0]*255, color[1]*255, color[2]*255, 0.7);
+			}else{
+				context2d.fillStyle = rgba(color[0]*50+205, color[1]*50+205, color[2]*50+205, 0.80);
+				context2d.strokeStyle = rgba(color[0]*50+205, color[1]*50+205, color[2]*50+205, 0.80);
+			}
+			context2d.fillRect(2,-(labelsBoxSize),textSize.width+6,labelsBoxSize);
+			context2d.lineWidth = 1;
+			context2d.strokeRect(2,-(labelsBoxSize),textSize.width+6,labelsBoxSize);
+			
+			if(useDarkBackground){
+				context2d.fillStyle = "rgba(255, 255, 255, 0.6)";
+			}else{
+				context2d.fillStyle = "rgba(0, 0, 0, 0.9)";
+			}
+			
 			context2d.fillText(theName,5,-5);
 			context2d.translate(-x,-y);
 		}
@@ -720,17 +799,17 @@ function redraw(){
 // Event of resize of the canvas (called by the splitter or by windows resizing)
 function willResizeEvent(event){
 	//requestAnimFrame(function(){
-		var dpr = 1;
-		if(window.devicePixelRatio !== undefined)
-			dpr = window.devicePixelRatio;
+		var dpr = window.devicePixelRatio || 1;
+		networkCanvas2D.width = canvasContainer.innerWidth();
+		networkCanvas2D.height = canvasContainer.innerHeight();
 		networkCanvas.style.width = canvasContainer.innerWidth()+"px";
 		networkCanvas.style.height = canvasContainer.innerHeight()+"px";
 		networkCanvas2D.style.width = canvasContainer.innerWidth()+"px";
 		networkCanvas2D.style.height = canvasContainer.innerHeight()+"px";
-		networkCanvas2D.width = canvasContainer.innerWidth();
-		networkCanvas2D.height = canvasContainer.innerHeight();
-		networkCanvas.width = networkCanvas.clientWidth;
-		networkCanvas.height = networkCanvas.clientHeight;
+		networkCanvas.width = dpr*networkCanvas.clientWidth;
+		networkCanvas.height = dpr*networkCanvas.clientHeight;
+		networkCanvas2D.width = dpr*networkCanvas2D.clientWidth;
+		networkCanvas2D.height = dpr*networkCanvas2D.clientHeight;
 		resizeCanvas(networkCanvas.width,networkCanvas.height);
 	//});
 }
@@ -900,8 +979,8 @@ $().ready(function(){
 			
 			
 			networkCanvas2D.ontouchmove = function(event) {
-				touchCurrentScale = event.scale;
-				cameraDistance=6.0/(touchCurrentScale * touchMinScale);
+				//touchCurrentScale = event.scale;
+				//cameraDistance=6.0/(touchCurrentScale * touchMinScale);
 				//requestAnimFrame(function(){
 				redrawingFromMouseWheelEvent = true;
 				if(!animate){
@@ -949,6 +1028,30 @@ $().ready(function(){
 	
 	
 	// GUI Panel
+	// Width Slider
+	var widthChange = function(event, ui) {
+		newValue = $("#widthSlider").slider("value");
+		
+		linesWidth = newValue;
+		$("#widthValue").text(""+linesWidth);
+		//requestAnimFrame(function(){
+		
+		if(!animate){
+			redraw();
+		}
+		//});
+	}
+	
+	$("#widthSlider").slider({
+		max: 10,
+		min: 0.5,
+		step: 0.5,
+		value: 1,
+		slide:widthChange,
+		change:widthChange
+	});
+
+
 	// Intensity Slider
 	var intensityChange = function(event, ui) {
 		newValue = $("#intensitySlider").slider("value");
@@ -967,13 +1070,13 @@ $().ready(function(){
 		max: 255,
 		min: 0,
 		step: 1,
-		value: 20,
+		value: 80,
 		slide:intensityChange,
 		change:intensityChange
 	});
 	
 	// Vertex Intensity Slider
-	var intensityChange = function(event, ui) {
+	var vertexIntensityChange = function(event, ui) {
 		newValue = $("#verticesIntensitySlider").slider("value");
 		
 		verticesIntensity = intensityTransfFunction(newValue);
@@ -987,9 +1090,9 @@ $().ready(function(){
 		max: 255,
 		min: 0,
 		step: 1,
-		value: 20,
-		slide:intensityChange,
-		change:intensityChange
+		value: 80,
+		slide:vertexIntensityChange,
+		change:vertexIntensityChange
 	});
 	
 	// vertex Scale
@@ -1051,6 +1154,19 @@ $().ready(function(){
 		useEdgesDepth = $("#useEdgesDepthCheck").is(':checked');
 		if(!animate){
 			redraw();
+		}
+	});
+	
+	$("#useDarkBackgroundCheck").button();
+	$("#useDarkBackgroundCheck").click(function(){
+		useDarkBackground = $("#useDarkBackgroundCheck").is(':checked');
+		if(!animate){
+			redraw();
+		}
+		if(useDarkBackground){
+			 $("#propertiesPanel").css('backgroundColor','#000000').css('color','#FFFFFF');
+		}else{
+			 $("#propertiesPanel").css('backgroundColor','#FFFFFF').css('color','#000000');
 		}
 	});
 	
