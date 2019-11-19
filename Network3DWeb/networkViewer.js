@@ -1,7 +1,7 @@
 /*
  * Implementation of a Complex Network Viewerer in WebGL
  * Assignment for Computational Graphics graduate course
- * ICMC - Universidade de S„o Paulo
+ * ICMC - Universidade de S√£o Paulo
  * Created by Filipi Nacimento Silva
  *
 */
@@ -152,8 +152,8 @@ Licensor promises not to interfere with or be responsible for such uses
 by You.
 
 
-14) THE CYBERNETIC VISION RESEARCH GROUP (CYVISION), UNIVERISADE DE S√O
-PAULO (USP), INSTITUTE OF PHYSICS OF S√O CARLOS (IFSC), MAKE NO
+14) THE CYBERNETIC VISION RESEARCH GROUP (CYVISION), UNIVERISADE DE S√ÉO
+PAULO (USP), INSTITUTE OF PHYSICS OF S√ÉO CARLOS (IFSC), MAKE NO
 REPRESENTATION ABOUT THE SUITABILITY OR ACCURACY OF THIS SOFTWARE OR
 DATA FOR ANY PURPOSE, AND MAKES NO WARRANTIES, EITHER EXPRESS OR
 IMPLIED, INCLUDING THE WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
@@ -931,7 +931,7 @@ $().ready(function(){
 	
 	//GL context can be obtained with Debug form as in the following commented line
 	//gl = WebGLDebugUtils.makeDebugContext(WebGLUtils.create3DContext(networkCanvas,{antialias: true}));
-	gl = WebGLUtils.create3DContext(networkCanvas,{antialias: true});
+	gl = WebGLUtils.create3DContext(networkCanvas,{antialias: true, powerPreference :"high-performance", desynchronized:true});
 	context2d = networkCanvas2D.getContext('2d');
 	
 		// Easily switch between regular canvas 2d context and webgl-2d
