@@ -973,9 +973,32 @@ $().ready(function(){
 			
 			
 			
-			networkCanvas2D.ongestureend = function(event){
+			var startScale = 1.0;
+			networkCanvas2D.ongesturestart = function(event){
+				startScale=event.scale;
+			}
+			networkCanvas2D.ongesturechange = function(event){
+				console.log(event.scale);
 				 touchMinScale *= event.scale ;
+				var delta = event.scale-startScale;
+				console.log(delta);
+				cameraDistance+=(-delta)*2;
+				if(cameraDistance<0.01){
+					cameraDistance=0.01;
+				}else if(cameraDistance>10){
+					cameraDistance = 10;
+				}
+				//requestAnimFrame(function(){
+					redrawingFromMouseWheelEvent = true;
+					if(!animate){
+						redraw();
+					}
+				startScale = event.scale;
 			};
+			networkCanvas2D.ongestureEnd = function(event){
+				startScale=1.0;
+			}
+			
 			
 			
 			networkCanvas2D.ontouchmove = function(event) {
